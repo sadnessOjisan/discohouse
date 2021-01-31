@@ -37,6 +37,11 @@ export const useSignup = () => {
     setToken(password);
   };
 
+  const handleClickGithub = () => {
+    const provider = new firebase.auth.GithubAuthProvider();
+    firebase.auth().signInWithRedirect(provider);
+  };
+
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
     e.preventDefault();
     firebase
@@ -105,5 +110,6 @@ export const useSignup = () => {
     handleLogout,
     token,
     handleSetToken,
+    handleClickGithub,
   };
 };
