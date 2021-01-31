@@ -15,14 +15,17 @@ export const Signup = () => {
     handleLogout,
   } = useSignup();
   const [user, loading, error] = useAuthState(auth);
-
   return (
     <div>
-      {user ? (
+      {loading ? (
+        <div>loading</div>
+      ) : user ? (
         <button onClick={handleLogout}>logout</button>
+      ) : error ? (
+        <div>error</div>
       ) : (
         <Fragment>
-          <h1>sign up</h1>
+          <h1>signup</h1>
           <button>github signup</button>
           <form onSubmit={handleSubmit}>
             <div>

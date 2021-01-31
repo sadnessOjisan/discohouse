@@ -1,5 +1,7 @@
 import { Fragment, h } from "preact";
+import { Link } from "preact-router";
 import { useAuthState } from "react-firebase-hooks/auth";
+
 import { useSignin } from "../hooks/useSignin";
 import { auth } from "../infra/firebase";
 
@@ -15,12 +17,16 @@ export const Signin = () => {
   const [user, loading, error] = useAuthState(auth);
   return (
     <div>
-      {user ? (
+      {loading ? (
+        <div>loading</div>
+      ) : user ? (
         <button onClick={handleLogout}>logout</button>
+      ) : error ? (
+        <div>error</div>
       ) : (
         <Fragment>
           <h1>sign in</h1>
-          <button>github signup</button>
+          <button>github signin</button>
           <form onSubmit={handleSubmit}>
             <div>
               <label>email</label>
@@ -44,6 +50,9 @@ export const Signin = () => {
             </div>
             <button>submit</button>
           </form>
+          <p>
+            アカウント作成は<Link href="/signup">こちら</Link>から。
+          </p>
         </Fragment>
       )}
     </div>
