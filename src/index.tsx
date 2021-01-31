@@ -1,6 +1,8 @@
-import { h, render } from "preact";
 import { setup } from "goober";
+import { h, render } from "preact";
+
+import { App } from "./pages/app";
 
 setup(h);
 
-render(<div>hello</div>, document.body);
+render(<App />, document.body);

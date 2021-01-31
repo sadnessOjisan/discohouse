@@ -29,6 +29,7 @@
     "eslint-config-preact": "^1.1.3",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
     "html-webpack-plugin": "^4.5.1",
     "prettier": "^2.2.1",
     "ts-loader": "^8.0.14",
@@ -40,6 +41,7 @@
   "dependencies": {
     "goober": "^2.0.28",
     "preact": "^10.5.12",
-    "preact-router": "^3.2.1"
+    "preact-router": "^3.2.1",
+    "react-router": "^5.2.0"
   }
 }
