@@ -20,6 +20,7 @@ export const Mypage = () => {
             <div>
               招待URL:
               {`${getHostUrl(getEnv())}/signup?token=${user.invitationKey}`}
+              you have {user.invitation} invitations.
             </div>
           )}
           <button onClick={logout}>logout</button>
