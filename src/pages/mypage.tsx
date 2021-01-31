@@ -1,10 +1,7 @@
 import { h } from "preact";
 import { Link } from "preact-router";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 import { useMypage } from "../hooks/useMypage";
-import { useUser } from "../hooks/useUser";
-import { auth } from "../infra/firebase";
 import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
 

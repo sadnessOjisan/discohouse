@@ -18,8 +18,8 @@ export const useUser = (uid?: string) => {
         if (doc.exists) {
           const data: FirestoreUserField = doc.data() as any; // TODO: validation
           setUser({
-            name: data.name || undefined,
-            image: data.image || undefined,
+            name: data.name || "undefined",
+            image: data.image || Avater,
             invitation: data.invitation,
             invitationKey: data.invitationKey,
           });
@@ -46,7 +46,7 @@ export const useUser = (uid?: string) => {
               if (doc.exists) {
                 const data: FirestoreUserField = doc.data() as any; // TODO: validation
                 setInvitor({
-                  invitedUserName: data.name || "匿名希望",
+                  invitedUserName: data.name || "undefined",
                   invitedUserId: doc.id,
                   invitedImage: data.image || Avater,
                 });
@@ -56,6 +56,6 @@ export const useUser = (uid?: string) => {
             });
         });
       });
-  }, []);
+  }, [uid]);
   return { user, invitor };
 };
