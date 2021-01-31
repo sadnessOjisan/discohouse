@@ -1,8 +1,8 @@
 import firebase from "firebase";
 import { JSX } from "preact";
 import { useState } from "preact/hooks";
-import { FIRESTORE_KEY } from "../const/firestore-key";
 
+import { FIRESTORE_KEY } from "../const/firestore-key";
 import { auth, db } from "../infra/firebase";
 
 export const useSignup = () => {
