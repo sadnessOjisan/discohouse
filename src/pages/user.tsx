@@ -1,4 +1,5 @@
 import { h } from "preact";
+import { Link } from "preact-router";
 
 import { useUser } from "../hooks/useUser";
 import { getEnv } from "../util/getEnv";
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export const User = (props: Props) => {
-  const { user } = useUser(props.id);
+  const { user, invitor } = useUser(props.id);
   return (
     <div>
       {user ? (
@@ -24,6 +25,15 @@ export const User = (props: Props) => {
         </div>
       ) : (
         "no user"
+      )}
+      {invitor && (
+        <div>
+          from:
+          <Link href={`/users/${invitor.invitedUserId}`}>
+            {invitor.invitedUserName}
+            <img src={invitor.invitedImage} />
+          </Link>
+        </div>
       )}
     </div>
   );
