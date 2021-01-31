@@ -26,7 +26,7 @@ export const User = (props: Props) => {
       {invitor && (
         <div>
           from:
-          <Link href={`/users/${invitor.invitedUserId}`}>
+          <Link href={`/${invitor.invitedUserId}`}>
             {invitor.invitedUserName}
             <img src={invitor.invitedImage} />
           </Link>

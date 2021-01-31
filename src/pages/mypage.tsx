@@ -6,7 +6,16 @@ import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
 
 export const Mypage = () => {
-  const { user, logout, invitor, name, image, handleImageChange } = useMypage();
+  const {
+    user,
+    logout,
+    invitor,
+    name,
+    image,
+    handleImageChange,
+    saveProfile,
+    handleChangeName,
+  } = useMypage();
   return (
     <div>
       {user ? (
@@ -14,7 +23,8 @@ export const Mypage = () => {
           <div>
             <input type="file" onChange={handleImageChange} />
             <img src={image} />
-            <input value={name} />
+            <input value={name} onChange={handleChangeName} />
+            <button onClick={saveProfile}>save</button>
           </div>
           {user.invitation > 0 && (
             <div>
@@ -31,7 +41,7 @@ export const Mypage = () => {
       {invitor && (
         <div>
           from:
-          <Link href={`/users/${invitor.invitedUserId}`}>
+          <Link href={`/${invitor.invitedUserId}`}>
             {invitor.invitedUserName}
             <img src={invitor.invitedImage} />
           </Link>

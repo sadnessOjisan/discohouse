@@ -85,13 +85,31 @@ export const useMypage = () => {
     const ref = storage.ref().child(CLOUDSTORAGE_KEY.USER_IMAGE);
     ref.put(file).then((snapshot) => {
       snapshot.ref.getDownloadURL().then((value) => {
-        db.collection(FIRESTORE_KEY.USERS).doc(currentUser.uid).update({
-          image: value,
-        });
         setImage(value);
       });
     });
   };
 
-  return { user, invitor, logout, name, setName, image, handleImageChange };
+  const handleChangeName = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
+    const name = (e.target as HTMLInputElement).value;
+    setName(name);
+  };
+
+  const saveProfile = () => {
+    db.collection(FIRESTORE_KEY.USERS).doc(currentUser.uid).update({
+      name: name,
+      image: image,
+    });
+  };
+
+  return {
+    user,
+    invitor,
+    logout,
+    name,
+    handleChangeName,
+    image,
+    handleImageChange,
+    saveProfile,
+  };
 };
