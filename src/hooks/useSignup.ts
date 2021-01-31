@@ -63,7 +63,7 @@ export const useSignup = () => {
             if (querySnapshot.size > 1) {
               console.error("same tokens");
             }
-            querySnapshot.forEach(async (doc) => 
+            querySnapshot.forEach(async (doc) => {
               const data: FirestoreUserField = doc.data() as any;
               console.log("find! data", data);
               await doc.ref.update({ invitation: data.invitation - 1 });
