@@ -14,8 +14,10 @@ export const Signin = () => {
     handleSubmit,
     handleLogout,
     handleClickGithub,
+    user,
+    loading,
+    error,
   } = useSignin();
-  const [user, loading, error] = useAuthState(auth);
   return (
     <div>
       {loading ? (

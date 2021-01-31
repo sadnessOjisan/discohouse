@@ -2,12 +2,14 @@ import firebase from "firebase";
 import { JSX } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import { route } from "preact-router";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth } from "../infra/firebase";
 
 export const useSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, loading, error] = useAuthState(auth);
 
   const handleSetEmail = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
     const email = (e.target as HTMLInputElement).value;
@@ -20,13 +22,17 @@ export const useSignin = () => {
   };
 
   useEffect(() => {
+    if (user) {
+      route(`/mypage`, true);
+    }
+  }, [user]);
+
+  useEffect(() => {
     firebase
       .auth()
       .getRedirectResult()
       .then((result) => {
         if (result.user) {
-          console.log(result);
-
           route(`/mypage`, true);
         }
       })
@@ -74,5 +80,8 @@ export const useSignin = () => {
     handleSubmit,
     handleLogout,
     handleClickGithub,
+    user,
+    loading,
+    error,
   };
 };

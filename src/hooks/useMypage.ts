@@ -1,3 +1,4 @@
+import { route } from "preact-router";
 import { useEffect, useState } from "preact/hooks";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -61,5 +62,11 @@ export const useMypage = () => {
         });
       });
   }, [currentUser?.uid]);
-  return { user, invitor };
+
+  const logout = () => {
+    auth.signOut();
+    route("/signin", true);
+  };
+
+  return { user, invitor, logout };
 };
