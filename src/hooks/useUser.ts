@@ -9,6 +9,7 @@ import { Invitor, User } from "../type/user";
 export const useUser = (uid?: string) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
+  const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
   useEffect(() => {
     if (uid === undefined) return;
     db.collection(FIRESTORE_KEY.USERS)
@@ -29,7 +30,39 @@ export const useUser = (uid?: string) => {
       });
   }, [uid]);
 
+  // 招待した人
   useEffect(() => {
+    if (uid === undefined) return;
+    db.collection(FIRESTORE_KEY.INVITATIONS)
+      .where("from", "==", uid)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach(async (doc) => {
+          const invitation: FirestoreInvitationField = doc.data() as any;
+          db.collection(FIRESTORE_KEY.USERS)
+            .doc(invitation.to)
+            .get()
+            .then((doc) => {
+              if (doc.exists) {
+                const data: FirestoreUserField = doc.data() as any; // TODO: validation
+                setInvited([
+                  ...invited,
+                  {
+                    invitedUserName: data.name || "undefined",
+                    invitedUserId: doc.id,
+                    invitedImage: data.image || Avater,
+                  },
+                ]);
+              } else {
+                console.log("No such document!");
+              }
+            });
+        });
+      });
+  }, [uid, invited]);
+
+  useEffect(() => {
+    if (uid === undefined) return;
     db.collection(FIRESTORE_KEY.INVITATIONS)
       .where("to", "==", uid)
       .get()
@@ -57,5 +90,5 @@ export const useUser = (uid?: string) => {
         });
       });
   }, [uid]);
-  return { user, invitor };
+  return { user, invitor, invited };
 };

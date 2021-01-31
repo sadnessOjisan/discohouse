@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const User = (props: Props) => {
-  const { user, invitor } = useUser(props.id);
+  const { user, invitor, invited } = useUser(props.id);
   return (
     <div>
       {user ? (
@@ -32,6 +32,13 @@ export const User = (props: Props) => {
           </Link>
         </div>
       )}
+      <h1>招待した人</h1>
+      {invited.map((inv) => (
+        <a key={inv.invitedUserId} href={`/${inv.invitedUserId}`}>
+          <img src={inv.invitedImage} />
+          <div>{inv.invitedUserName}</div>
+        </a>
+      ))}
     </div>
   );
 };

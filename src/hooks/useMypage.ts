@@ -102,7 +102,7 @@ export const useMypage = () => {
             });
         });
       });
-  }, [currentUser?.uid]);
+  }, [currentUser?.uid, invited]);
 
   const logout = () => {
     auth.signOut();
