@@ -4,13 +4,13 @@ import { FIRESTORE_KEY } from "../const/firestore-key";
 import { db } from "../infra/firebase";
 import { FirestoreInvitationField, FirestoreUserField } from "../type/api";
 import { Invitor, User } from "../type/user";
+import Avater from "../assets/avatar.png";
 
 export const useUser = (uid?: string) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
   useEffect(() => {
     if (uid === undefined) return;
-    console.log(uid);
     db.collection(FIRESTORE_KEY.USERS)
       .doc(uid)
       .get()
@@ -20,7 +20,6 @@ export const useUser = (uid?: string) => {
           setUser({
             name: data.name || undefined,
             image: data.image || undefined,
-            email: data.email,
             invitation: data.invitation,
             invitationKey: data.invitationKey,
           });
@@ -49,6 +48,7 @@ export const useUser = (uid?: string) => {
                 setInvitor({
                   invitedUserName: data.name || "匿名希望",
                   invitedUserId: doc.id,
+                  invitedImage: data.image || Avater,
                 });
               } else {
                 console.log("No such document!");

@@ -20,6 +20,10 @@ module.exports = {
         ],
         exclude: /node_modules/,
       },
+      {
+        test: /\.png/,
+        type: "asset/resource",
+      },
     ],
   },
   resolve: {

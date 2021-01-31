@@ -47,7 +47,6 @@ export const useSignup = () => {
         const uid = user.user.uid;
         if (!user.user.email) throw new Error("invalid user");
         const data: SaveUser = {
-          email: user.user.email,
           name: user.user.displayName,
           image: user.user.photoURL,
           invitation: 3,
