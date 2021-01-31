@@ -1,18 +1,24 @@
 import { h } from "preact";
 import { Link } from "preact-router";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useMypage } from "../hooks/useMypage";
 import { useUser } from "../hooks/useUser";
 import { auth } from "../infra/firebase";
 import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
 
 export const Mypage = () => {
-  const { user, invitor } = useUser();
+  const { user, invitor } = useMypage();
   return (
     <div>
       {user ? (
         <div>
-          user {JSON.stringify(user)}
+          <div>
+            <p>
+              <span>{user.name}</span>
+              <img src={user.image}></img>
+            </p>
+          </div>
           {user.invitation > 0 && (
             <div>
               招待URL:
