@@ -1,0 +1,45 @@
+{
+  "name": "discohouse",
+  "version": "1.0.0",
+  "description": "招待制SNS",
+  "main": "index.js",
+  "scripts": {
+    "build": "NODE_ENV=production webpack",
+    "dev": "NODE_ENV=development webpack serve",
+    "format:fix": "prettier --write '**/*.{ts,tsx,js,jsx,json,md}'",
+    "format": "prettier --check './src/**/*.{ts,tsx,js,jsx,json,md}'",
+    "lint:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx,json,md}'",
+    "lint": "eslint 'src/**/*.{ts,tsx,js,jsx,json,md}'",
+    "typecheck": "tsc -p . --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sadnessOjisan/discohouse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sadnessOjisan/discohouse/issues"
+  },
+  "homepage": "https://github.com/sadnessOjisan/discohouse#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "eslint": "^7.19.0",
+    "eslint-config-preact": "^1.1.3",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-react": "^7.22.0",
+    "html-webpack-plugin": "^4.5.1",
+    "prettier": "^2.2.1",
+    "ts-loader": "^8.0.14",
+    "typescript": "^4.1.3",
+    "webpack": "^5.19.0",
+    "webpack-cli": "^4.4.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "goober": "^2.0.28",
+    "preact": "^10.5.12",
+    "preact-router": "^3.2.1"
+  }
+}
