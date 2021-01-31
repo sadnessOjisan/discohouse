@@ -1,5 +1,6 @@
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 
 import fb from "firebase/app";
 
@@ -20,3 +21,4 @@ export const firebase = !fb.apps.length
 
 export const auth = firebase.auth();
 export const db = firebase.firestore();
+export const storage = firebase.storage();

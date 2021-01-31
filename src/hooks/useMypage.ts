@@ -1,10 +1,11 @@
-import { route } from "preact-router";
+import { JSX } from "preact";
 import { useEffect, useState } from "preact/hooks";
+import { route } from "preact-router";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import Avater from "../assets/avatar.png";
-import { FIRESTORE_KEY } from "../const/firestore-key";
-import { auth, db } from "../infra/firebase";
+import { CLOUDSTORAGE_KEY, FIRESTORE_KEY } from "../const/firestore-key";
+import { auth, db, storage } from "../infra/firebase";
 import { FirestoreInvitationField, FirestoreUserField } from "../type/api";
 import { Invitor, User } from "../type/user";
 
@@ -12,6 +13,14 @@ export const useMypage = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
   const [currentUser] = useAuthState(auth);
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+
+  useEffect(() => {
+    setName(user?.name || "");
+    setImage(user?.image || "");
+  }, [user]);
+
   useEffect(() => {
     if (currentUser?.uid === undefined) return;
     db.collection(FIRESTORE_KEY.USERS)
@@ -33,7 +42,6 @@ export const useMypage = () => {
   }, [currentUser?.uid]);
 
   useEffect(() => {
-    console.log(currentUser?.uid);
     if (currentUser?.uid === undefined) return;
     db.collection(FIRESTORE_KEY.INVITATIONS)
       .where("to", "==", currentUser?.uid)
@@ -68,5 +76,22 @@ export const useMypage = () => {
     route("/signin", true);
   };
 
-  return { user, invitor, logout };
+  const handleImageChange = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
+    const files = (e.target as HTMLInputElement).files;
+    if (!files) {
+      throw new Error("should choose file");
+    }
+    const file = files[0];
+    const ref = storage.ref().child(CLOUDSTORAGE_KEY.USER_IMAGE);
+    ref.put(file).then((snapshot) => {
+      snapshot.ref.getDownloadURL().then((value) => {
+        db.collection(FIRESTORE_KEY.USERS).doc(currentUser.uid).update({
+          image: value,
+        });
+        setImage(value);
+      });
+    });
+  };
+
+  return { user, invitor, logout, name, setName, image, handleImageChange };
 };

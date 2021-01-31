@@ -6,14 +6,15 @@ import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
 
 export const Mypage = () => {
-  const { user, logout, invitor } = useMypage();
+  const { user, logout, invitor, name, image, handleImageChange } = useMypage();
   return (
     <div>
       {user ? (
         <div>
           <div>
-            <span>{user.name}</span>
-            <img src={user.image} />
+            <input type="file" onChange={handleImageChange} />
+            <img src={image} />
+            <input value={name} />
           </div>
           {user.invitation > 0 && (
             <div>
