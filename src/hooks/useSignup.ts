@@ -1,5 +1,7 @@
+import firebase from "firebase";
 import { JSX } from "preact";
 import { useState } from "preact/hooks";
+import { auth } from "../infra/firebase";
 
 export const useSignup = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +19,21 @@ export const useSignup = () => {
 
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
     e.preventDefault();
-    // submit firebase
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("会員登録に失敗しました。");
+        // ..
+      });
+  };
+
+  const handleLogout = () => {
+    auth.signOut();
   };
 
   return {
@@ -26,5 +42,6 @@ export const useSignup = () => {
     password,
     handleSetPassword,
     handleSubmit,
+    handleLogout,
   };
 };

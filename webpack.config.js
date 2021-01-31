@@ -8,6 +8,7 @@ module.exports = {
     path: path.resolve(__dirname, "./dist"),
     filename: "build.js",
   },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
