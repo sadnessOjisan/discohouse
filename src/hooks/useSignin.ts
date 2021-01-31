@@ -4,7 +4,7 @@ import { useState } from "preact/hooks";
 
 import { auth } from "../infra/firebase";
 
-export const useSignup = () => {
+export const useSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,7 +22,7 @@ export const useSignup = () => {
     e.preventDefault();
     firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(email, password)
       .then((user) => {
         console.log(user);
       })

@@ -1,4 +1,5 @@
 import { Fragment, h } from "preact";
+import { Link } from "preact-router";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { useSignup } from "../hooks/useSignup";
@@ -46,6 +47,9 @@ export const Signup = () => {
             </div>
             <button>submit</button>
           </form>
+          <p>
+            アカウントを持っている方は<Link href="/signin">こちら</Link>から。
+          </p>
         </Fragment>
       )}
     </div>
