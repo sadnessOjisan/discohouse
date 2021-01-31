@@ -1,5 +1,5 @@
 import { h } from "preact";
 
-export const Signin = () => {
+export const Signup = () => {
   return <div>signup</div>;
 };
