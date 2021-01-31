@@ -30,3 +30,9 @@ jobs:
         run: npm run format
       - name: build
         run: npm run build
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting:discohouse
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
