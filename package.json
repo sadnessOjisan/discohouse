@@ -39,9 +39,11 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "firebase": "^8.2.5",
     "goober": "^2.0.28",
     "preact": "^10.5.12",
     "preact-router": "^3.2.1",
+    "react-firebase-hooks": "^2.2.0",
     "react-router": "^5.2.0"
   }
 }
