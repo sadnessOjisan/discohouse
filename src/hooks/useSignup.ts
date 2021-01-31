@@ -4,7 +4,11 @@ import { useEffect, useState } from "preact/hooks";
 
 import { FIRESTORE_KEY } from "../const/firestore-key";
 import { auth, db } from "../infra/firebase";
-import { FirestoreUserField, SaveUser } from "../type/api";
+import {
+  FirestoreInvitationField,
+  FirestoreUserField,
+  SaveUser,
+} from "../type/api";
 import { createToken } from "../util/createToken";
 import { getParam } from "../util/getParam";
 
@@ -40,6 +44,7 @@ export const useSignup = () => {
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
         if (!user.user) throw new Error("invalid user");
+        const uid = user.user.uid;
         if (!user.user.email) throw new Error("invalid user");
         const data: SaveUser = {
           email: user.user.email,
@@ -48,14 +53,17 @@ export const useSignup = () => {
           invitation: 3,
           invitationKey: createToken(),
         };
+
+        // 新規登録
         db.collection(FIRESTORE_KEY.USERS)
-          .doc(user.user?.uid)
+          .doc(uid)
           .set(data)
           .catch((e) => {
             console.error(e);
             throw new Error("firestore error");
           });
 
+        // invitationの減少
         db.collection(FIRESTORE_KEY.USERS)
           .where("invitationKey", "==", token)
           .get()
@@ -65,7 +73,16 @@ export const useSignup = () => {
             }
             querySnapshot.forEach(async (doc) => {
               const data: FirestoreUserField = doc.data() as any;
-              console.log("find! data", data);
+              // invitation logを作成
+              const inv: FirestoreInvitationField = {
+                from: doc.id,
+                to: uid,
+              };
+              db.collection(FIRESTORE_KEY.INVITATIONS)
+                .add(inv)
+                .catch((e) => {
+                  console.error(e);
+                });
               await doc.ref.update({ invitation: data.invitation - 1 });
             });
           });

@@ -5,3 +5,8 @@ export type User = {
   invitation: number;
   invitationKey: string;
 };
+
+export type Invitor = {
+  invitedUserName: string;
+  invitedUserId: string;
+};

@@ -2,11 +2,12 @@ import { useEffect, useState } from "preact/hooks";
 
 import { FIRESTORE_KEY } from "../const/firestore-key";
 import { db } from "../infra/firebase";
-import { FirestoreUserField } from "../type/api";
-import { User } from "../type/user";
+import { FirestoreInvitationField, FirestoreUserField } from "../type/api";
+import { Invitor, User } from "../type/user";
 
 export const useUser = (uid?: string) => {
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
   useEffect(() => {
     if (uid === undefined) return;
     console.log(uid);
@@ -28,5 +29,33 @@ export const useUser = (uid?: string) => {
         }
       });
   }, [uid]);
-  return { user };
+
+  useEffect(() => {
+    db.collection(FIRESTORE_KEY.INVITATIONS)
+      .where("to", "==", uid)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.size > 1) {
+          console.error("same tokens");
+        }
+        snapshot.forEach(async (doc) => {
+          const invitation: FirestoreInvitationField = doc.data() as any;
+          db.collection(FIRESTORE_KEY.USERS)
+            .doc(invitation.from)
+            .get()
+            .then((doc) => {
+              if (doc.exists) {
+                const data: FirestoreUserField = doc.data() as any; // TODO: validation
+                setInvitor({
+                  invitedUserName: data.name || "匿名希望",
+                  invitedUserId: doc.id,
+                });
+              } else {
+                console.log("No such document!");
+              }
+            });
+        });
+      });
+  }, []);
+  return { user, invitor };
 };
