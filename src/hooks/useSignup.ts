@@ -4,7 +4,7 @@ import { useEffect, useState } from "preact/hooks";
 
 import { FIRESTORE_KEY } from "../const/firestore-key";
 import { auth, db } from "../infra/firebase";
-import { SaveUser } from "../type/api";
+import { FirestoreUserField, SaveUser } from "../type/api";
 import { createToken } from "../util/createToken";
 import { getParam } from "../util/getParam";
 
@@ -55,11 +55,24 @@ export const useSignup = () => {
             console.error(e);
             throw new Error("firestore error");
           });
+
+        db.collection(FIRESTORE_KEY.USERS)
+          .where("invitationKey", "==", token)
+          .get()
+          .then((querySnapshot) => {
+            if (querySnapshot.size > 1) {
+              console.error("same tokens");
+            }
+            querySnapshot.forEach(async (doc) => 
+              const data: FirestoreUserField = doc.data() as any;
+              console.log("find! data", data);
+              await doc.ref.update({ invitation: data.invitation - 1 });
+            });
+          });
       })
       .catch((error) => {
         console.error(error);
         alert("会員登録に失敗しました。");
-        // ..
       });
   };
 
