@@ -1,7 +1,8 @@
 import { h } from "preact";
 import { Route, Router } from "preact-router";
-import { Signin } from "./signin";
+
 import { Root } from "./root";
+import { Signin } from "./signin";
 import { User } from "./user";
 
 export const App = () => {
