@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { Link } from "preact-router";
 import { useAuthState } from "react-firebase-hooks/auth";
+
 import { useMypage } from "../hooks/useMypage";
 import { useUser } from "../hooks/useUser";
 import { auth } from "../infra/firebase";
@@ -16,7 +17,7 @@ export const Mypage = () => {
           <div>
             <p>
               <span>{user.name}</span>
-              <img src={user.image}></img>
+              <img src={user.image} />
             </p>
           </div>
           {user.invitation > 0 && (

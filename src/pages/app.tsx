@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { Route, Router } from "preact-router";
-import { Mypage } from "./mypage";
 
+import { Mypage } from "./mypage";
 import { Root } from "./root";
 import { Signin } from "./signin";
 import { Signup } from "./signup";
