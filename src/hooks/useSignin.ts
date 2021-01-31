@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import { JSX } from "preact";
 import { useState } from "preact/hooks";
+import { route } from "preact-router";
 
 import { auth } from "../infra/firebase";
 
@@ -24,7 +25,7 @@ export const useSignin = () => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log(user);
+        route(`/user/${user.user?.uid}`);
       })
       .catch((error) => {
         console.error(error);

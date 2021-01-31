@@ -1,13 +1,22 @@
 import firebase from "firebase";
 import { JSX } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 import { FIRESTORE_KEY } from "../const/firestore-key";
 import { auth, db } from "../infra/firebase";
+import { FirestoreUserField, SaveUser } from "../type/api";
+import { createToken } from "../util/createToken";
+import { getParam } from "../util/getParam";
 
 export const useSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const token = getParam("token", window.location.href);
+    setToken(token || undefined);
+  }, []);
 
   const handleSetEmail = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
     const email = (e.target as HTMLInputElement).value;
@@ -19,28 +28,51 @@ export const useSignup = () => {
     setPassword(password);
   };
 
+  const handleSetToken = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
+    const password = (e.target as HTMLInputElement).value;
+    setToken(password);
+  };
+
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
     e.preventDefault();
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
+        if (!user.user) throw new Error("invalid user");
+        if (!user.user.email) throw new Error("invalid user");
+        const data: SaveUser = {
+          email: user.user.email,
+          name: user.user.displayName,
+          image: user.user.photoURL,
+          invitation: 3,
+          invitationKey: createToken(),
+        };
         db.collection(FIRESTORE_KEY.USERS)
           .doc(user.user?.uid)
-          .set({
-            email: user.user?.email,
-            name: user.user?.displayName,
-            image: user.user?.photoURL,
-          })
+          .set(data)
           .catch((e) => {
             console.error(e);
             throw new Error("firestore error");
+          });
+
+        db.collection(FIRESTORE_KEY.USERS)
+          .where("invitationKey", "==", token)
+          .get()
+          .then((querySnapshot) => {
+            if (querySnapshot.size > 1) {
+              console.error("same tokens");
+            }
+            querySnapshot.forEach(async (doc) => {
+              const data: FirestoreUserField = doc.data() as any;
+              console.log("find! data", data);
+              await doc.ref.update({ invitation: data.invitation - 1 });
+            });
           });
       })
       .catch((error) => {
         console.error(error);
         alert("会員登録に失敗しました。");
-        // ..
       });
   };
 
@@ -55,5 +87,7 @@ export const useSignup = () => {
     handleSetPassword,
     handleSubmit,
     handleLogout,
+    token,
+    handleSetToken,
   };
 };
