@@ -1,13 +1,15 @@
 import firebase from "firebase";
 import { JSX } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { route } from "preact-router";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth } from "../infra/firebase";
 
 export const useSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, loading, error] = useAuthState(auth);
 
   const handleSetEmail = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
     const email = (e.target as HTMLInputElement).value;
@@ -19,13 +21,35 @@ export const useSignin = () => {
     setPassword(password);
   };
 
+  useEffect(() => {
+    if (user) {
+      route(`/mypage`, true);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    firebase
+      .auth()
+      .getRedirectResult()
+      .then((result) => {
+        if (result.user) {
+          route(`/mypage`, true);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   const handleClickGithub = () => {
+    console.log("mypage");
     const provider = new firebase.auth.GithubAuthProvider();
     firebase
       .auth()
       .signInWithRedirect(provider)
-      .then((user) => {
-        user;
+      .then(() => {
+        console.log("mypage");
+        route(`/user/mypage`, true);
       });
   };
 
@@ -35,7 +59,7 @@ export const useSignin = () => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        route(`/user/${user.user?.uid}`);
+        route(`/user/${user.user?.uid}`, true);
       })
       .catch((error) => {
         console.error(error);
@@ -56,5 +80,8 @@ export const useSignin = () => {
     handleSubmit,
     handleLogout,
     handleClickGithub,
+    user,
+    loading,
+    error,
   };
 };

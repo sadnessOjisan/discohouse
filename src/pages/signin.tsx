@@ -1,9 +1,7 @@
 import { Fragment, h } from "preact";
 import { Link } from "preact-router";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 import { useSignin } from "../hooks/useSignin";
-import { auth } from "../infra/firebase";
 
 export const Signin = () => {
   const {
@@ -14,8 +12,10 @@ export const Signin = () => {
     handleSubmit,
     handleLogout,
     handleClickGithub,
+    user,
+    loading,
+    error,
   } = useSignin();
-  const [user, loading, error] = useAuthState(auth);
   return (
     <div>
       {loading ? (

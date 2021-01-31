@@ -24,7 +24,7 @@ export const Signup = () => {
         <div>loading</div>
       ) : user ? (
         <div>
-          <Link href={`/users/${user.uid}`}>mypage</Link>
+          <Link href={`/mypage`}>mypage</Link>
           <button onClick={handleLogout}>logout</button>
         </div>
       ) : error ? (

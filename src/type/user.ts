@@ -1,6 +1,6 @@
 export type User = {
-  name?: string;
-  image?: string;
+  name: string;
+  image: string;
   invitation: number;
   invitationKey: string;
 };

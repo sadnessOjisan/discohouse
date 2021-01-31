@@ -1,5 +1,52 @@
 import { h } from "preact";
+import { Link } from "preact-router";
+
+import { useMypage } from "../hooks/useMypage";
+import { getEnv } from "../util/getEnv";
+import { getHostUrl } from "../util/getHostUrl";
 
 export const Mypage = () => {
-  return <div>mypage</div>;
+  const {
+    user,
+    logout,
+    invitor,
+    name,
+    image,
+    handleImageChange,
+    saveProfile,
+    handleChangeName,
+  } = useMypage();
+  return (
+    <div>
+      {user ? (
+        <div>
+          <div>
+            <input type="file" onChange={handleImageChange} />
+            <img src={image} />
+            <input value={name} onChange={handleChangeName} />
+            <button onClick={saveProfile}>save</button>
+          </div>
+          {user.invitation > 0 && (
+            <div>
+              招待URL:
+              {`${getHostUrl(getEnv())}/signup?token=${user.invitationKey}`}
+              you have {user.invitation} invitations.
+            </div>
+          )}
+          <button onClick={logout}>logout</button>
+        </div>
+      ) : (
+        "no user"
+      )}
+      {invitor && (
+        <div>
+          from:
+          <Link href={`/${invitor.invitedUserId}`}>
+            {invitor.invitedUserName}
+            <img src={invitor.invitedImage} />
+          </Link>
+        </div>
+      )}
+    </div>
+  );
 };
