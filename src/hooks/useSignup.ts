@@ -32,7 +32,7 @@ export const useSignup = () => {
         };
 
         const uid = user?.uid;
-        if (uid === undefined) throw new Error("arienai");
+        if (uid === undefined) return;
 
         if (token === undefined) {
           alert("tokenがありません");

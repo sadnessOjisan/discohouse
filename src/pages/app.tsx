@@ -1,5 +1,6 @@
 import { h } from "preact";
 import { Route, Router } from "preact-router";
+import { Mypage } from "./mypage";
 
 import { Root } from "./root";
 import { Signin } from "./signin";
@@ -12,6 +13,7 @@ export const App = () => {
       <Route path="/users/:id" component={User} />
       <Route path="/signin" component={Signin} />
       <Route path="/signup" component={Signup} />
+      <Route path="/mypage" component={Mypage} />
       <Route path="/" component={Root} />
     </Router>
   );

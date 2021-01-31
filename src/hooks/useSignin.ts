@@ -1,6 +1,6 @@
 import firebase from "firebase";
 import { JSX } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { route } from "preact-router";
 
 import { auth } from "../infra/firebase";
@@ -19,13 +19,31 @@ export const useSignin = () => {
     setPassword(password);
   };
 
+  useEffect(() => {
+    firebase
+      .auth()
+      .getRedirectResult()
+      .then((result) => {
+        if (result.user) {
+          console.log(result);
+
+          route(`/mypage`, true);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   const handleClickGithub = () => {
+    console.log("mypage");
     const provider = new firebase.auth.GithubAuthProvider();
     firebase
       .auth()
       .signInWithRedirect(provider)
-      .then((user) => {
-        user;
+      .then(() => {
+        console.log("mypage");
+        route(`/user/mypage`, true);
       });
   };
 
@@ -35,7 +53,7 @@ export const useSignin = () => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        route(`/user/${user.user?.uid}`);
+        route(`/user/${user.user?.uid}`, true);
       })
       .catch((error) => {
         console.error(error);
