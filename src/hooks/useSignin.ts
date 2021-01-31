@@ -19,6 +19,16 @@ export const useSignin = () => {
     setPassword(password);
   };
 
+  const handleClickGithub = () => {
+    const provider = new firebase.auth.GithubAuthProvider();
+    firebase
+      .auth()
+      .signInWithRedirect(provider)
+      .then((user) => {
+        user;
+      });
+  };
+
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
     e.preventDefault();
     firebase
@@ -45,5 +55,6 @@ export const useSignin = () => {
     handleSetPassword,
     handleSubmit,
     handleLogout,
+    handleClickGithub,
   };
 };

@@ -13,6 +13,7 @@ export const Signin = () => {
     handleSetPassword,
     handleSubmit,
     handleLogout,
+    handleClickGithub,
   } = useSignin();
   const [user, loading, error] = useAuthState(auth);
   return (
@@ -26,7 +27,7 @@ export const Signin = () => {
       ) : (
         <Fragment>
           <h1>sign in</h1>
-          <button>github signin</button>
+          <button onClick={handleClickGithub}>github signin</button>
           <form onSubmit={handleSubmit}>
             <div>
               <label>email</label>
