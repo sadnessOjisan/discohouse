@@ -1,8 +1,9 @@
 import firebase from "firebase";
 import { JSX } from "preact";
 import { useState } from "preact/hooks";
+import { FIRESTORE_KEY } from "../const/firestore-key";
 
-import { auth } from "../infra/firebase";
+import { auth, db } from "../infra/firebase";
 
 export const useSignup = () => {
   const [email, setEmail] = useState("");
@@ -24,7 +25,17 @@ export const useSignup = () => {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log(user);
+        db.collection(FIRESTORE_KEY.USERS)
+          .doc(user.user?.uid)
+          .set({
+            email: user.user?.email,
+            name: user.user?.displayName,
+            image: user.user?.photoURL,
+          })
+          .catch((e) => {
+            console.error(e);
+            throw new Error("firestore error");
+          });
       })
       .catch((error) => {
         console.error(error);

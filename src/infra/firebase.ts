@@ -19,4 +19,4 @@ export const firebase = !fb.apps.length
   : fb.app();
 
 export const auth = firebase.auth();
-export const db = firebase.firestore;
+export const db = firebase.firestore();
