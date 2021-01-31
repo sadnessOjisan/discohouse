@@ -15,10 +15,16 @@ export const useSignup = () => {
     setPassword(password);
   };
 
+  const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
+    e.preventDefault();
+    // submit firebase
+  };
+
   return {
     email,
     handleSetEmail,
     password,
     handleSetPassword,
+    handleSubmit,
   };
 };
