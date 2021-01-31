@@ -15,6 +15,7 @@ export const Signup = () => {
     handleLogout,
     token,
     handleSetToken,
+    handleClickGithub,
   } = useSignup();
   const [user, loading, error] = useAuthState(auth);
   return (
@@ -31,7 +32,7 @@ export const Signup = () => {
       ) : token ? (
         <Fragment>
           <h1>signup</h1>
-          <button>github signup</button>
+          <button onClick={handleClickGithub}>github signup</button>
           <form onSubmit={handleSubmit}>
             <div>
               <label>email</label>

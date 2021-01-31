@@ -19,6 +19,71 @@ export const useSignup = () => {
 
   useEffect(() => {
     const token = getParam("token", window.location.href);
+    firebase
+      .auth()
+      .getRedirectResult()
+      .then((result) => {
+        const user = result.user;
+        const data: SaveUser = {
+          name: user?.displayName || null,
+          image: user?.photoURL || null,
+          invitation: 3,
+          invitationKey: createToken(),
+        };
+
+        const uid = user?.uid;
+        if (uid === undefined) throw new Error("arienai");
+
+        if (token === undefined) {
+          alert("tokenがありません");
+          return;
+        }
+
+        // 新規登録
+        db.collection(FIRESTORE_KEY.USERS)
+          .doc(uid)
+          .set(data)
+          .catch((e) => {
+            console.error(e);
+            throw new Error("firestore error");
+          });
+
+        // invitationの減少
+        db.collection(FIRESTORE_KEY.USERS)
+          .where("invitationKey", "==", token)
+          .get()
+          .then((querySnapshot) => {
+            if (querySnapshot.size > 1) {
+              console.error("same tokens");
+            }
+            querySnapshot.forEach(async (doc) => {
+              const data: FirestoreUserField = doc.data() as any;
+              // invitation logを作成
+              const inv: FirestoreInvitationField = {
+                from: doc.id,
+                to: uid,
+              };
+              db.collection(FIRESTORE_KEY.INVITATIONS)
+                .add(inv)
+                .catch((e) => {
+                  console.error(e);
+                });
+
+              if (data.invitation - 1 < 0) {
+                alert("招待者の招待可能数の上限を超えました。");
+                return;
+              }
+              await doc.ref.update({ invitation: data.invitation - 1 });
+            });
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const token = getParam("token", window.location.href);
     setToken(token || undefined);
   }, []);
 
@@ -35,6 +100,16 @@ export const useSignup = () => {
   const handleSetToken = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
     const password = (e.target as HTMLInputElement).value;
     setToken(password);
+  };
+
+  const handleClickGithub = () => {
+    const provider = new firebase.auth.GithubAuthProvider();
+    firebase
+      .auth()
+      .signInWithRedirect(provider)
+      .then((user) => {
+        user;
+      });
   };
 
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
@@ -82,6 +157,10 @@ export const useSignup = () => {
                 .catch((e) => {
                   console.error(e);
                 });
+              if (data.invitation - 1 < 0) {
+                alert("招待者の招待可能数の上限を超えました。");
+                return;
+              }
               await doc.ref.update({ invitation: data.invitation - 1 });
             });
           });
@@ -105,5 +184,6 @@ export const useSignup = () => {
     handleLogout,
     token,
     handleSetToken,
+    handleClickGithub,
   };
 };
