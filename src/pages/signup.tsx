@@ -13,6 +13,8 @@ export const Signup = () => {
     handleSetPassword,
     handleSubmit,
     handleLogout,
+    token,
+    handleSetToken,
   } = useSignup();
   const [user, loading, error] = useAuthState(auth);
   return (
@@ -20,10 +22,13 @@ export const Signup = () => {
       {loading ? (
         <div>loading</div>
       ) : user ? (
-        <button onClick={handleLogout}>logout</button>
+        <div>
+          <Link href={`/users/${user.uid}`}>mypage</Link>
+          <button onClick={handleLogout}>logout</button>
+        </div>
       ) : error ? (
         <div>error</div>
-      ) : (
+      ) : token ? (
         <Fragment>
           <h1>signup</h1>
           <button>github signup</button>
@@ -48,12 +53,23 @@ export const Signup = () => {
                 onChange={handleSetPassword}
               />
             </div>
+            <div>
+              <label>token</label>
+              <input
+                name="token"
+                type="text"
+                value={token}
+                onChange={handleSetToken}
+              />
+            </div>
             <button>submit</button>
           </form>
           <p>
             アカウントを持っている方は<Link href="/signin">こちら</Link>から。
           </p>
         </Fragment>
+      ) : (
+        <div>you need token</div>
       )}
     </div>
   );

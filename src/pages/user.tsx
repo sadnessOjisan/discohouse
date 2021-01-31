@@ -1,10 +1,23 @@
 import { h } from "preact";
 
+import { useUser } from "../hooks/useUser";
+
 interface Props {
-  id?: number;
+  id?: string;
 }
 
 export const User = (props: Props) => {
-  if (props.id === undefined) throw new Error("id is no");
-  return <div>user {props.id}</div>;
+  const { user } = useUser(props.id);
+  return (
+    <div>
+      {user ? (
+        <div>
+          user {JSON.stringify(user)}
+          {user.invitation > 0 && <div>招待token: {user.invitationKey}</div>}
+        </div>
+      ) : (
+        "no user"
+      )}
+    </div>
+  );
 };
