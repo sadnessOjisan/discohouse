@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { Fragment, h } from "preact";
 import { Link } from "preact-router";
 
 import { useMypage } from "../hooks/useMypage";
@@ -10,6 +10,7 @@ export const Mypage = () => {
     user,
     logout,
     invitor,
+    invited,
     name,
     image,
     handleImageChange,
@@ -47,6 +48,13 @@ export const Mypage = () => {
           </Link>
         </div>
       )}
+      <h1>招待した人</h1>
+      {invited.map((inv) => (
+        <a key={inv.invitedUserId} href={`/${inv.invitedUserId}`}>
+          <img src={inv.invitedImage} />
+          <div>{inv.invitedUserName}</div>
+        </a>
+      ))}
     </div>
   );
 };

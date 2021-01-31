@@ -12,6 +12,7 @@ import { Invitor, User } from "../type/user";
 export const useMypage = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
+  const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
   const [currentUser] = useAuthState(auth);
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
@@ -41,6 +42,7 @@ export const useMypage = () => {
       });
   }, [currentUser?.uid]);
 
+  // 招待してくれた人
   useEffect(() => {
     if (currentUser?.uid === undefined) return;
     db.collection(FIRESTORE_KEY.INVITATIONS)
@@ -63,6 +65,37 @@ export const useMypage = () => {
                   invitedUserId: doc.id,
                   invitedImage: data.image || Avater,
                 });
+              } else {
+                console.log("No such document!");
+              }
+            });
+        });
+      });
+  }, [currentUser?.uid]);
+
+  // 招待した人
+  useEffect(() => {
+    if (currentUser?.uid === undefined) return;
+    db.collection(FIRESTORE_KEY.INVITATIONS)
+      .where("from", "==", currentUser?.uid)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach(async (doc) => {
+          const invitation: FirestoreInvitationField = doc.data() as any;
+          db.collection(FIRESTORE_KEY.USERS)
+            .doc(invitation.to)
+            .get()
+            .then((doc) => {
+              if (doc.exists) {
+                const data: FirestoreUserField = doc.data() as any; // TODO: validation
+                setInvited([
+                  ...invited,
+                  {
+                    invitedUserName: data.name || "undefined",
+                    invitedUserId: doc.id,
+                    invitedImage: data.image || Avater,
+                  },
+                ]);
               } else {
                 console.log("No such document!");
               }
@@ -105,6 +138,7 @@ export const useMypage = () => {
   return {
     user,
     invitor,
+    invited,
     logout,
     name,
     handleChangeName,
