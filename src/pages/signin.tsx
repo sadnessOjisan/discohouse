@@ -23,15 +23,28 @@ export const Signin = () => {
     handleSubmit,
     handleClickGithub,
     loading,
-    error,
+    errorMessage,
   } = useSignin();
   const isWide = useMedia({ minWidth: "768px" });
   return (
     <Layout>
-      <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <div style={{ maxWidth: 924, margin: "0 auto" }}>
         {loading ? (
-          <ProgressCircle aria-label="Loading…" isIndeterminate />
-        ) : error ? (
+          <div
+            style={{
+              position: "fixed",
+              width: "100%",
+              height: "100%",
+              top: 0,
+              left: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ProgressCircle aria-label="Loading…" isIndeterminate />
+          </div>
+        ) : errorMessage !== undefined ? (
           <Flex justifyContent="center" alignItems="center">
             <AlertDialog
               title="Error"
@@ -41,7 +54,7 @@ export const Signin = () => {
                 window.location.href = "/";
               }}
             >
-              session confirm error. please reload this page.
+              {errorMessage}
             </AlertDialog>
           </Flex>
         ) : (

@@ -33,7 +33,20 @@ export const User = (props: Props) => {
           {invited.length > 0 && <Invited invitors={invited} />}
         </View>
       ) : (
-        <ProgressCircle aria-label="Loading…" isIndeterminate />
+        <div
+          style={{
+            position: "fixed",
+            width: "100%",
+            height: "100%",
+            top: 0,
+            left: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ProgressCircle aria-label="Loading…" isIndeterminate />
+        </div>
       )}
     </Layout>
   );

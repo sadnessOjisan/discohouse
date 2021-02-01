@@ -121,7 +121,20 @@ export const Mypage = () => {
             </View>
           </View>
         ) : (
-          <ProgressCircle aria-label="Loading…" isIndeterminate />
+          <div
+            style={{
+              position: "fixed",
+              width: "100%",
+              height: "100%",
+              top: 0,
+              left: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ProgressCircle aria-label="Loading…" isIndeterminate />
+          </div>
         )}
       </div>
     </Layout>

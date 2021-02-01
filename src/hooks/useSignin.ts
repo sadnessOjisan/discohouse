@@ -10,6 +10,17 @@ export const useSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(
+        "認証サービスにて不具合が発生しました。しばらくお待ちください。"
+      );
+    }
+  }, [error]);
 
   const handleSetEmail = (email: string) => {
     setEmail(email);
@@ -36,11 +47,13 @@ export const useSignin = () => {
       })
       .catch((error) => {
         console.error(error);
+        setErrorMessage(
+          "ユーザー情報の取得に失敗しました。再度GitHubアカウントでサインインしてください。"
+        );
       });
   }, []);
 
   const handleClickGithub = () => {
-    console.log("mypage");
     const provider = new firebase.auth.GithubAuthProvider();
     firebase
       .auth()
@@ -48,6 +61,12 @@ export const useSignin = () => {
       .then(() => {
         console.log("mypage");
         route(`/user/mypage`, true);
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage(
+          "サインインに失敗しました。GitHubアカウントをお持ちか確認してください。"
+        );
       });
   };
 
@@ -61,8 +80,9 @@ export const useSignin = () => {
       })
       .catch((error) => {
         console.error(error);
-        alert("会員登録に失敗しました。");
-        // ..
+        setErrorMessage(
+          "サインインに失敗しました。アドレス・パスワードが正しいものか確認してください。"
+        );
       });
   };
 
@@ -81,5 +101,6 @@ export const useSignin = () => {
     user,
     loading,
     error,
+    errorMessage,
   };
 };

@@ -30,9 +30,22 @@ export const Signup = () => {
   } = useSignup();
   return (
     <Layout>
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
+      <div style={{ maxWidth: 924, margin: "0 auto" }}>
         {loading ? (
-          <ProgressCircle aria-label="Loading…" isIndeterminate />
+          <div
+            style={{
+              position: "fixed",
+              width: "100%",
+              height: "100%",
+              top: 0,
+              left: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ProgressCircle aria-label="Loading…" isIndeterminate />
+          </div>
         ) : error ? (
           <Flex justifyContent="center" alignItems="center">
             <AlertDialog
