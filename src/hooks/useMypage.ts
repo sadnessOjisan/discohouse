@@ -142,5 +142,6 @@ export const useMypage = () => {
     image,
     handleImageChange,
     saveProfile,
+    error,
   };
 };
