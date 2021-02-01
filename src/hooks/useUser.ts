@@ -7,8 +7,12 @@ import { FirestoreInvitationField, FirestoreUserField } from "../type/api";
 import { Invitor, User } from "../type/user";
 
 export const useUser = (uid?: string) => {
+  console.log(uid);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
+  const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
+
+  // user情報の取得
   useEffect(() => {
     if (uid === undefined) return;
     db.collection(FIRESTORE_KEY.USERS)
@@ -29,7 +33,37 @@ export const useUser = (uid?: string) => {
       });
   }, [uid]);
 
+  // 自分が招待した人の情報を取得
   useEffect(() => {
+    if (uid === undefined) return;
+    db.collection(FIRESTORE_KEY.INVITATIONS)
+      .where("from", "==", uid)
+      .get()
+      .then((snapshot) => {
+        const promises = snapshot.docs.map(async (snap) => {
+          const invitation: FirestoreInvitationField = snap.data() as any;
+          return db
+            .collection(FIRESTORE_KEY.USERS)
+            .doc(invitation.to)
+            .get()
+            .then((doc) => {
+              const data: FirestoreUserField = doc.data() as any; // TODO: validation
+              return {
+                invitedUserName: data.name || "undefined",
+                invitedUserId: doc.id,
+                invitedImage: data.image || Avater,
+              };
+            });
+        });
+        Promise.all(promises).then((data) => setInvited(data));
+      });
+    return () => setInvited([]);
+  }, [uid]);
+
+  // 自分を招待した人の情報を取得
+  useEffect(() => {
+    if (uid === undefined) return;
+    console.log("invited uid", uid);
     db.collection(FIRESTORE_KEY.INVITATIONS)
       .where("to", "==", uid)
       .get()
@@ -56,6 +90,7 @@ export const useUser = (uid?: string) => {
             });
         });
       });
+    return () => setInvitor(undefined);
   }, [uid]);
-  return { user, invitor };
+  return { user, invitor, invited };
 };

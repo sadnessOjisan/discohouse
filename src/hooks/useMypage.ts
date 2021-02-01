@@ -12,9 +12,11 @@ import { Invitor, User } from "../type/user";
 export const useMypage = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
+  const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
   const [currentUser] = useAuthState(auth);
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setName(user?.name || "");
@@ -36,11 +38,13 @@ export const useMypage = () => {
             invitationKey: data.invitationKey,
           });
         } else {
-          console.log("No such document!");
+          console.error("not found user");
+          setError("該当するユーザーが見つかりませんでした。");
         }
       });
   }, [currentUser?.uid]);
 
+  // 招待してくれた人
   useEffect(() => {
     if (currentUser?.uid === undefined) return;
     db.collection(FIRESTORE_KEY.INVITATIONS)
@@ -68,6 +72,32 @@ export const useMypage = () => {
               }
             });
         });
+      });
+  }, [currentUser?.uid]);
+
+  // 招待した人
+  useEffect(() => {
+    if (currentUser?.uid === undefined) return;
+    db.collection(FIRESTORE_KEY.INVITATIONS)
+      .where("from", "==", currentUser?.uid)
+      .get()
+      .then((snapshot) => {
+        const promises = snapshot.docs.map(async (doc) => {
+          const invitation: FirestoreInvitationField = doc.data() as any;
+          return db
+            .collection(FIRESTORE_KEY.USERS)
+            .doc(invitation.to)
+            .get()
+            .then((doc) => {
+              const data: FirestoreUserField = doc.data() as any; // TODO: validation
+              return {
+                invitedUserName: data.name || "undefined",
+                invitedUserId: doc.id,
+                invitedImage: data.image || Avater,
+              };
+            });
+        });
+        Promise.all(promises).then((data) => setInvited(data));
       });
   }, [currentUser?.uid]);
 
@@ -105,11 +135,13 @@ export const useMypage = () => {
   return {
     user,
     invitor,
+    invited,
     logout,
     name,
     handleChangeName,
     image,
     handleImageChange,
     saveProfile,
+    error,
   };
 };

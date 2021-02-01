@@ -1,3 +1,3 @@
 export const createToken = () => {
-  return Math.random().toString(36).slice(-12);
+  return Math.random().toString(36).slice(-8);
 };

@@ -10,12 +10,14 @@ export const Mypage = () => {
     user,
     logout,
     invitor,
+    invited,
     name,
     image,
     handleImageChange,
     saveProfile,
     handleChangeName,
   } = useMypage();
+  console.log("invited", invited);
   return (
     <div>
       {user ? (
@@ -38,6 +40,7 @@ export const Mypage = () => {
       ) : (
         "no user"
       )}
+      <h1>invite from</h1>
       {invitor && (
         <div>
           from:
@@ -47,6 +50,13 @@ export const Mypage = () => {
           </Link>
         </div>
       )}
+      <h1>招待した人</h1>
+      {invited.map((inv) => (
+        <a key={inv.invitedUserId} href={`/${inv.invitedUserId}`}>
+          <img src={inv.invitedImage} />
+          <div>{inv.invitedUserName}</div>
+        </a>
+      ))}
     </div>
   );
 };
