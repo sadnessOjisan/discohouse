@@ -26,7 +26,8 @@ export const Signup = () => {
     token,
     handleClickGithub,
     loading,
-    error,
+    errorMessage,
+    sending,
   } = useSignup();
   return (
     <Layout>
@@ -46,7 +47,7 @@ export const Signup = () => {
           >
             <ProgressCircle aria-label="Loading…" isIndeterminate />
           </div>
-        ) : error ? (
+        ) : errorMessage ? (
           <Flex justifyContent="center" alignItems="center">
             <AlertDialog
               title="Error"
@@ -56,7 +57,7 @@ export const Signup = () => {
                 window.location.href = "/";
               }}
             >
-              session confirm error. please reload this page.
+              {errorMessage}
             </AlertDialog>
           </Flex>
         ) : token ? (
@@ -110,8 +111,13 @@ export const Signup = () => {
                     onChange={handleSetPassword}
                     value={password}
                   />
-                  <Button type="submit" variant="cta" marginTop={24}>
-                    submit
+                  <Button
+                    type="submit"
+                    variant="cta"
+                    marginTop={24}
+                    isDisabled={sending}
+                  >
+                    {sending ? "sending" : "submit"}
                   </Button>
                 </Form>
               </View>

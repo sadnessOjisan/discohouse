@@ -118,7 +118,7 @@ export const Signin = () => {
                     isDisabled={sending}
                   >
                     <Send />
-                    submit
+                    {sending ? "sending" : "submit"}
                   </Button>
                 </Form>
               </View>
