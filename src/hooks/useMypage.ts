@@ -127,8 +127,8 @@ export const useMypage = () => {
 
   const saveProfile = () => {
     db.collection(FIRESTORE_KEY.USERS).doc(currentUser.uid).update({
-      name: name,
-      image: image,
+      name,
+      image,
     });
   };
 
