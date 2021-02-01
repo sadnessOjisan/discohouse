@@ -1,6 +1,5 @@
 import {
   Button,
-  Flex,
   Heading,
   Image,
   ProgressCircle,
@@ -8,11 +7,11 @@ import {
   TextField,
   View,
 } from "@adobe/react-spectrum";
-import { Fragment, h } from "preact";
-import { Link } from "preact-router";
+import { h } from "preact";
 
 import { Invited } from "../components/invited";
 import { Invitor } from "../components/invitor";
+import { Layout } from "../components/layout";
 import { useMypage } from "../hooks/useMypage";
 import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
@@ -31,7 +30,7 @@ export const Mypage = () => {
   } = useMypage();
 
   return (
-    <View padding={8} paddingLeft={24}>
+    <Layout>
       <Heading level={1}>Mypage</Heading>
       {user ? (
         <View>
@@ -112,6 +111,6 @@ export const Mypage = () => {
       ) : (
         <ProgressCircle aria-label="Loading…" isIndeterminate />
       )}
-    </View>
+    </Layout>
   );
 };

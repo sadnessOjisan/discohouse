@@ -14,7 +14,7 @@ export const Invited = ({ invitors }: Props) => {
     <View>
       <Heading level={2}>sent invitation</Heading>
       {invitors.map((inv) => (
-        <a
+        <Link
           key={inv.invitedUserId}
           href={`/${inv.invitedUserId}`}
           style={{ display: "block", margin: "24px 0px" }}
@@ -29,7 +29,7 @@ export const Invited = ({ invitors }: Props) => {
             />
             <View marginLeft={12}>{inv.invitedUserName}</View>
           </Flex>
-        </a>
+        </Link>
       ))}
     </View>
   );
