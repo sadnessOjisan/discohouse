@@ -1,6 +1,8 @@
 import firebase from "firebase";
 import { JSX } from "preact";
 import { useEffect, useState } from "preact/hooks";
+import { route } from "preact-router";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import { FIRESTORE_KEY } from "../const/firestore-key";
 import { auth, db } from "../infra/firebase";
@@ -16,6 +18,13 @@ export const useSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState<string | undefined>(undefined);
+  const [user, loading, error] = useAuthState(auth);
+
+  useEffect(() => {
+    if (user) {
+      route("/mypage", true);
+    }
+  }, [user]);
 
   useEffect(() => {
     const token = getParam("token", window.location.href);
@@ -87,13 +96,11 @@ export const useSignup = () => {
     setToken(token || undefined);
   }, []);
 
-  const handleSetEmail = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
-    const email = (e.target as HTMLInputElement).value;
+  const handleSetEmail = (email: string) => {
     setEmail(email);
   };
 
-  const handleSetPassword = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
-    const password = (e.target as HTMLInputElement).value;
+  const handleSetPassword = (password: string) => {
     setPassword(password);
   };
 
@@ -192,5 +199,8 @@ export const useSignup = () => {
     token,
     handleSetToken,
     handleClickGithub,
+    user,
+    loading,
+    error,
   };
 };

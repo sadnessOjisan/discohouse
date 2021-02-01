@@ -1,8 +1,11 @@
-import { setup } from "goober";
+import { defaultTheme, Provider } from "@adobe/react-spectrum";
 import { h, render } from "preact";
 
 import { App } from "./pages/app";
 
-setup(h);
-
-render(<App />, document.body);
+render(
+  <Provider theme={defaultTheme} minHeight="100vh">
+    <App />
+  </Provider>,
+  document.body
+);

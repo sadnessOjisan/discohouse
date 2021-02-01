@@ -1,6 +1,9 @@
+import { Flex, Image, ProgressCircle, Text, View } from "@adobe/react-spectrum";
 import { h } from "preact";
-import { Link } from "preact-router";
 
+import { Invited } from "../components/invited";
+import { Invitor } from "../components/invitor";
+import { Layout } from "../components/layout";
 import { useUser } from "../hooks/useUser";
 
 interface Props {
@@ -9,37 +12,29 @@ interface Props {
 
 export const User = (props: Props) => {
   const { user, invitor, invited } = useUser(props.id);
-  console.log("invited", invited);
   return (
-    <div>
+    <Layout>
       {user ? (
-        <div>
-          <div>
-            <p>
-              <span>{user.name}</span>
-              <img src={user.image} />
-            </p>
-          </div>
-        </div>
+        <View>
+          <View>
+            <Flex alignItems="center" direction="column">
+              <Image
+                src={user.image}
+                alt="invitor image"
+                width={100}
+                height={100}
+              />
+              <p>
+                <Text>{user.name}</Text>
+              </p>
+            </Flex>
+          </View>
+          {invitor && <Invitor invitor={invitor} />}
+          {invited.length > 0 && <Invited invitors={invited} />}
+        </View>
       ) : (
-        "no user"
+        <ProgressCircle aria-label="Loading…" isIndeterminate />
       )}
-      from:
-      {invitor && (
-        <div>
-          <Link href={`/${invitor.invitedUserId}`}>
-            {invitor.invitedUserName}
-            <img src={invitor.invitedImage} />
-          </Link>
-        </div>
-      )}
-      <h1>招待した人</h1>
-      {invited.map((inv) => (
-        <a key={inv.invitedUserId} href={`/${inv.invitedUserId}`}>
-          <img src={inv.invitedImage} />
-          <div>{inv.invitedUserName}</div>
-        </a>
-      ))}
-    </div>
+    </Layout>
   );
 };
