@@ -17,6 +17,7 @@ export const Mypage = () => {
     saveProfile,
     handleChangeName,
   } = useMypage();
+  console.log("invited", invited);
   return (
     <div>
       {user ? (

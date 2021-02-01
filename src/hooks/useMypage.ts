@@ -80,29 +80,24 @@ export const useMypage = () => {
       .where("from", "==", currentUser?.uid)
       .get()
       .then((snapshot) => {
-        snapshot.forEach(async (doc) => {
+        const promises = snapshot.docs.map(async (doc) => {
           const invitation: FirestoreInvitationField = doc.data() as any;
-          db.collection(FIRESTORE_KEY.USERS)
+          return db
+            .collection(FIRESTORE_KEY.USERS)
             .doc(invitation.to)
             .get()
             .then((doc) => {
-              if (doc.exists) {
-                const data: FirestoreUserField = doc.data() as any; // TODO: validation
-                setInvited([
-                  ...invited,
-                  {
-                    invitedUserName: data.name || "undefined",
-                    invitedUserId: doc.id,
-                    invitedImage: data.image || Avater,
-                  },
-                ]);
-              } else {
-                console.log("No such document!");
-              }
+              const data: FirestoreUserField = doc.data() as any; // TODO: validation
+              return {
+                invitedUserName: data.name || "undefined",
+                invitedUserId: doc.id,
+                invitedImage: data.image || Avater,
+              };
             });
         });
+        Promise.all(promises).then((data) => setInvited(data));
       });
-  }, [currentUser?.uid, invited]);
+  }, [currentUser?.uid]);
 
   const logout = () => {
     auth.signOut();
