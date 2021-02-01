@@ -40,28 +40,22 @@ export const useUser = (uid?: string) => {
       .where("from", "==", uid)
       .get()
       .then((snapshot) => {
-        snapshot.forEach(async (snap) => {
+        const promises = snapshot.docs.map(async (snap) => {
           const invitation: FirestoreInvitationField = snap.data() as any;
-          db.collection(FIRESTORE_KEY.USERS)
+          return db
+            .collection(FIRESTORE_KEY.USERS)
             .doc(invitation.to)
             .get()
             .then((doc) => {
-              console.log("invited doc", doc);
-              if (doc.exists) {
-                const data: FirestoreUserField = doc.data() as any; // TODO: validation
-                setInvited([
-                  ...invited,
-                  {
-                    invitedUserName: data.name || "undefined",
-                    invitedUserId: doc.id,
-                    invitedImage: data.image || Avater,
-                  },
-                ]);
-              } else {
-                console.log("No such document!");
-              }
+              const data: FirestoreUserField = doc.data() as any; // TODO: validation
+              return {
+                invitedUserName: data.name || "undefined",
+                invitedUserId: doc.id,
+                invitedImage: data.image || Avater,
+              };
             });
         });
+        Promise.all(promises).then((data) => setInvited(data));
       });
     return () => setInvited([]);
   }, [uid]);
