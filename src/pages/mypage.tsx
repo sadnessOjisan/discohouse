@@ -11,6 +11,8 @@ import {
 import { Fragment, h } from "preact";
 import { Link } from "preact-router";
 
+import { Invited } from "../components/invited";
+import { Invitor } from "../components/invitor";
 import { useMypage } from "../hooks/useMypage";
 import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
@@ -97,41 +99,8 @@ export const Mypage = () => {
             </Button>
           </View>
 
-          {invitor && (
-            <Fragment>
-              <Heading level={2}>nominated by</Heading>
-              <View>
-                from:
-                <Link href={`/${invitor.invitedUserId}`}>
-                  {invitor.invitedUserName}
-                  <img src={invitor.invitedImage} />
-                </Link>
-              </View>
-            </Fragment>
-          )}
-          {invited.length > 0 && (
-            <Fragment>
-              <Heading level={2}>sent invitation</Heading>
-              {invited.map((inv) => (
-                <a
-                  key={inv.invitedUserId}
-                  href={`/${inv.invitedUserId}`}
-                  style={{ display: "block", margin: "24px 0px" }}
-                >
-                  <Flex alignItems="center">
-                    <Image
-                      src={inv.invitedImage}
-                      alt="invitor image"
-                      width={40}
-                      height={40}
-                      UNSAFE_style={{ marginRight: 12 }}
-                    />
-                    <View marginLeft={12}>{inv.invitedUserName}</View>
-                  </Flex>
-                </a>
-              ))}
-            </Fragment>
-          )}
+          {invitor && <Invitor invitor={invitor} />}
+          {invited.length > 0 && <Invited invitors={invited} />}
 
           <View>
             <Heading level={2}>Session</Heading>
