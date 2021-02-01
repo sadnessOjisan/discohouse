@@ -189,7 +189,7 @@ export const useSignup = () => {
           .then(() => {
             setSending(false);
           })
-          .catch((e) => {
+          .catch(() => {
             setErrorMessage("ユーザー情報の登録に失敗しました。");
           });
       })
