@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.7.0",
+    "@spectrum-icons/workflow": "^3.2.0",
     "firebase": "^8.2.5",
     "goober": "^2.0.28",
     "preact": "^10.5.12",

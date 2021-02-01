@@ -8,6 +8,7 @@ import {
   TextField,
   View,
 } from "@adobe/react-spectrum";
+import Send from "@spectrum-icons/workflow/Send";
 import { Fragment, h } from "preact";
 import useMedia from "use-media";
 
@@ -24,6 +25,7 @@ export const Signin = () => {
     handleClickGithub,
     loading,
     errorMessage,
+    sending,
   } = useSignin();
   const isWide = useMedia({ minWidth: "768px" });
   return (
@@ -77,6 +79,7 @@ export const Signin = () => {
               >
                 <Heading level={3}>Github</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
+                  <Send />
                   github signin
                 </Button>
               </View>
@@ -108,7 +111,13 @@ export const Signin = () => {
                     onChange={handleSetPassword}
                     value={password}
                   />
-                  <Button type="submit" variant="cta" marginTop={24}>
+                  <Button
+                    type="submit"
+                    variant="cta"
+                    marginTop={24}
+                    isDisabled={sending}
+                  >
+                    <Send />
                     submit
                   </Button>
                 </Form>

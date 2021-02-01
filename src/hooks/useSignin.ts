@@ -13,6 +13,7 @@ export const useSignin = () => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -72,10 +73,12 @@ export const useSignin = () => {
 
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
     e.preventDefault();
+    setSending(true);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
+        setSending(false);
         route(`/user/${user.user?.uid}`, true);
       })
       .catch((error) => {
@@ -102,5 +105,6 @@ export const useSignin = () => {
     loading,
     error,
     errorMessage,
+    sending,
   };
 };
