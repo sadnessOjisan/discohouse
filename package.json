@@ -4,7 +4,7 @@
   "description": "招待制SNS",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production webpack && cp ./src/ogp.png dist/ && cp ./src/favicon.ico dist/",
     "dev": "NODE_ENV=development webpack serve",
     "format:fix": "prettier --write '**/*.{ts,tsx,js,jsx,json,md}'",
     "format": "prettier --check './src/**/*.{ts,tsx,js,jsx,json,md}'",
