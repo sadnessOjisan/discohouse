@@ -25,7 +25,7 @@ export const Signin = () => {
     loading,
     error,
   } = useSignin();
-  const isWide = useMedia({ minWidth: "768" });
+  const isWide = useMedia({ minWidth: "768px" });
   return (
     <Layout>
       <div style={{ maxWidth: 600, margin: "0 auto" }}>
@@ -80,7 +80,7 @@ export const Signin = () => {
                 }}
               >
                 <Heading level={3}>Email</Heading>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} width={isWide ? "80%" : "50%"}>
                   <TextField
                     label="email"
                     name="email"
@@ -95,7 +95,7 @@ export const Signin = () => {
                     onChange={handleSetPassword}
                     value={password}
                   />
-                  <Button type="submit" variant="cta">
+                  <Button type="submit" variant="cta" marginTop={24}>
                     submit
                   </Button>
                 </Form>

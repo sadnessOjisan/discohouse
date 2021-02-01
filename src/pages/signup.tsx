@@ -16,7 +16,7 @@ import { Layout } from "../components/layout";
 import { useSignup } from "../hooks/useSignup";
 
 export const Signup = () => {
-  const isWide = useMedia({ minWidth: "768" });
+  const isWide = useMedia({ minWidth: "768px" });
   const {
     email,
     handleSetEmail,
@@ -30,7 +30,7 @@ export const Signup = () => {
   } = useSignup();
   return (
     <Layout>
-      <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <div style={{ maxWidth: 800, margin: "0 auto" }}>
         {loading ? (
           <ProgressCircle aria-label="Loading…" isIndeterminate />
         ) : error ? (
@@ -66,7 +66,7 @@ export const Signup = () => {
               >
                 <Heading level={3}>Github</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
-                  signup
+                  github signin
                 </Button>
               </View>
               <View
@@ -82,7 +82,7 @@ export const Signup = () => {
                 }}
               >
                 <Heading level={3}>Email</Heading>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} width={isWide ? "80%" : "50%"}>
                   <TextField
                     label="email"
                     name="email"
@@ -97,7 +97,7 @@ export const Signup = () => {
                     onChange={handleSetPassword}
                     value={password}
                   />
-                  <Button type="submit" variant="cta">
+                  <Button type="submit" variant="cta" marginTop={24}>
                     submit
                   </Button>
                 </Form>

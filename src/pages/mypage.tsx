@@ -31,87 +31,99 @@ export const Mypage = () => {
 
   return (
     <Layout>
-      <Heading level={1}>Mypage</Heading>
-      {user ? (
-        <View>
+      <div style={{ maxWidth: 924, margin: "0 auto" }}>
+        {user ? (
           <View>
-            {user.invitation > 0 && (
-              <View>
-                {" "}
-                <Heading level={2}>invite</Heading>
-                <p>
-                  <Text> you have {user.invitation} invitations.</Text>
-                </p>
-                <p>
-                  <Text marginEnd={12}>invitation url:</Text>
-                  <Text
-                    color="magenta-500"
-                    UNSAFE_style={{ color: "rgb(202, 41, 150)" }}
-                  >
-                    {`${getHostUrl(getEnv())}/signup?token=${
-                      user.invitationKey
-                    }`}
-                  </Text>
-                </p>
-              </View>
-            )}
-          </View>
-          <View>
-            <Heading level={2}>edit my profile</Heading>
-            <TextField
-              label="your name"
-              value={name}
-              onChange={handleChangeName}
-            />
-            <View marginTop={32}>
-              <label
-                style={{
-                  boxSizing: "border-box",
-                  color: "rgb(162, 162, 162)",
-                  colorScheme: "light dark",
-                  cursor: "Default",
-                  display: "flex",
-                  fontFamily:
-                    'adobe-clean-han-japanese, "Yu Gothic", "メ イ リ オ", "ヒ ラ ギ ノ 角 ゴ Pro W3", "Hiragino Kaku Gothic Pro W3", Osaka, "Ｍ Ｓ Ｐ ゴ シ ッ ク", "MS PGothic", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif',
-                  fontSize: "12px",
-                  fontStyle: "normal",
-                  fontWeight: "400",
-                  height: "24px",
-                  lineHeight: "15.6px",
-                  textAlign: "left",
-                  verticalAlign: "top",
-                  width: "192px",
-                }}
-              >
-                your image
-              </label>
-              <input
-                type="file"
-                onChange={handleImageChange}
-                style={{ color: "rgba(0, 0, 0, 0)" }}
-              />
-              <View width={200} height={200} marginTop={8}>
-                <Image src={image} alt="user image" />
-              </View>
+            <View marginBottom={32}>
+              {user.invitation > 0 && (
+                <View>
+                  <Heading level={2}>invite</Heading>
+                  <p>
+                    <Text>
+                      you have{" "}
+                      <Text
+                        color="magenta-500"
+                        UNSAFE_style={{ color: "rgb(202, 41, 150)" }}
+                      >
+                        {user.invitation}
+                      </Text>{" "}
+                      invitations.
+                    </Text>
+                  </p>
+                  <p>
+                    <Text marginEnd={12}>invitation url:</Text>
+                    <Text
+                      color="magenta-500"
+                      UNSAFE_style={{ color: "rgb(202, 41, 150)" }}
+                    >
+                      {`${getHostUrl(getEnv())}/signup?token=${
+                        user.invitationKey
+                      }`}
+                    </Text>
+                  </p>
+                </View>
+              )}
             </View>
-            <Button onPress={saveProfile} marginTop={32} variant="cta">
-              save
-            </Button>
-          </View>
+            <View marginBottom={32}>
+              <Heading level={2}>edit my profile</Heading>
+              <TextField
+                label="your name"
+                value={name}
+                onChange={handleChangeName}
+              />
+              <View marginTop={32}>
+                <label
+                  style={{
+                    boxSizing: "border-box",
+                    color: "rgb(162, 162, 162)",
+                    colorScheme: "light dark",
+                    cursor: "Default",
+                    display: "flex",
+                    fontFamily:
+                      'adobe-clean-han-japanese, "Yu Gothic", "メ イ リ オ", "ヒ ラ ギ ノ 角 ゴ Pro W3", "Hiragino Kaku Gothic Pro W3", Osaka, "Ｍ Ｓ Ｐ ゴ シ ッ ク", "MS PGothic", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif',
+                    fontSize: "12px",
+                    fontStyle: "normal",
+                    fontWeight: "400",
+                    height: "24px",
+                    lineHeight: "15.6px",
+                    textAlign: "left",
+                    verticalAlign: "top",
+                    width: "192px",
+                  }}
+                >
+                  your image
+                </label>
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  style={{ color: "rgba(0, 0, 0, 0)" }}
+                />
+                <View width={200} height={200} marginTop={8}>
+                  <Image src={image} alt="user image" />
+                </View>
+              </View>
+              <Button onPress={saveProfile} marginTop={32} variant="cta">
+                save
+              </Button>
+            </View>
+            <View marginBottom={32}>
+              {invitor && <Invitor invitor={invitor} />}
+            </View>
+            <View marginBottom={32}>
+              {invited.length > 0 && <Invited invitors={invited} />}
+            </View>
 
-          {invitor && <Invitor invitor={invitor} />}
-          {invited.length > 0 && <Invited invitors={invited} />}
-
-          <View>
-            <Heading level={2}>Session</Heading>
-            <Button onClick={logout} variant="negative">
-              logout
-            </Button>
+            <View marginBottom={32}>
+              <Heading level={2}>Session</Heading>
+              <Button onClick={logout} variant="negative">
+                logout
+              </Button>
+            </View>
           </View>
-        </View>
-      ) : (
-        <ProgressCircle aria-label="Loading…" isIndeterminate />
-      )}
+        ) : (
+          <ProgressCircle aria-label="Loading…" isIndeterminate />
+        )}
+      </div>
     </Layout>
   );
 };
