@@ -1,13 +1,5 @@
-import {
-  Flex,
-  Heading,
-  Image,
-  ProgressCircle,
-  Text,
-  View,
-} from "@adobe/react-spectrum";
+import { Flex, Image, ProgressCircle, Text, View } from "@adobe/react-spectrum";
 import { h } from "preact";
-import { Link } from "preact-router";
 
 import { Invited } from "../components/invited";
 import { Invitor } from "../components/invitor";

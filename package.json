@@ -47,6 +47,7 @@
     "preact": "^10.5.12",
     "preact-router": "^3.2.1",
     "react-firebase-hooks": "^2.2.0",
-    "react-router": "^5.2.0"
+    "react-router": "^5.2.0",
+    "use-media": "^1.4.0"
   }
 }

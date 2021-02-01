@@ -10,24 +10,21 @@ import {
 } from "@adobe/react-spectrum";
 import { Fragment, h } from "preact";
 import { Link } from "preact-router";
-import { useAuthState } from "react-firebase-hooks/auth";
+import useMedia from "use-media";
 
 import { Layout } from "../components/layout";
 import { useSignup } from "../hooks/useSignup";
-import { auth } from "../infra/firebase";
 
 export const Signup = () => {
+  const isWide = useMedia({ minWidth: "768" });
   const {
     email,
     handleSetEmail,
     password,
     handleSetPassword,
     handleSubmit,
-    handleLogout,
     token,
-    handleSetToken,
     handleClickGithub,
-    user,
     loading,
     error,
   } = useSignup();
@@ -54,12 +51,12 @@ export const Signup = () => {
             <Heading level={1} UNSAFE_style={{ textAlign: "center" }}>
               signup
             </Heading>
-            <Flex gap="size-200">
+            <Flex gap="size-200" direction={isWide ? "row" : "column"}>
               <View
                 UNSAFE_style={{
                   borderRadius: 8,
                   border: "solid 1px gray",
-                  width: "50%",
+                  width: isWide ? "50%" : "calc(100%-48px)",
                   padding: "64px 12px",
                   display: "flex",
                   alignItems: "center",
@@ -76,7 +73,7 @@ export const Signup = () => {
                 UNSAFE_style={{
                   borderRadius: 8,
                   border: "solid 1px gray",
-                  width: "50%",
+                  width: isWide ? "50%" : "calc(100%-48px)",
                   padding: "64px 12px",
                   display: "flex",
                   alignItems: "center",

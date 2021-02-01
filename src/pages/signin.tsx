@@ -1,8 +1,6 @@
 import {
-  ActionButton,
   AlertDialog,
   Button,
-  DialogTrigger,
   Flex,
   Form,
   Heading,
@@ -12,6 +10,7 @@ import {
 } from "@adobe/react-spectrum";
 import { Fragment, h } from "preact";
 import { Link } from "preact-router";
+import useMedia from "use-media";
 
 import { Layout } from "../components/layout";
 import { useSignin } from "../hooks/useSignin";
@@ -23,12 +22,11 @@ export const Signin = () => {
     password,
     handleSetPassword,
     handleSubmit,
-    handleLogout,
     handleClickGithub,
-    user,
     loading,
     error,
   } = useSignin();
+  const isWide = useMedia({ minWidth: "768" });
   return (
     <Layout>
       <div style={{ maxWidth: 600, margin: "0 auto" }}>
@@ -52,12 +50,12 @@ export const Signin = () => {
             <Heading level={1} UNSAFE_style={{ textAlign: "center" }}>
               signin
             </Heading>
-            <Flex gap="size-200">
+            <Flex gap="size-200" direction={isWide ? "row" : "column"}>
               <View
                 UNSAFE_style={{
                   borderRadius: 8,
                   border: "solid 1px gray",
-                  width: "50%",
+                  width: isWide ? "50%" : "calc(100%-48px)",
                   padding: "64px 12px",
                   display: "flex",
                   alignItems: "center",
@@ -74,7 +72,7 @@ export const Signin = () => {
                 UNSAFE_style={{
                   borderRadius: 8,
                   border: "solid 1px gray",
-                  width: "50%",
+                  width: isWide ? "50%" : "calc(100%-48px)",
                   padding: "64px 12px",
                   display: "flex",
                   alignItems: "center",

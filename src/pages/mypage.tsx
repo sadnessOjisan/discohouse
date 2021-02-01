@@ -34,10 +34,11 @@ export const Mypage = () => {
       <Heading level={1}>Mypage</Heading>
       {user ? (
         <View>
-          <Heading level={2}>invite</Heading>
           <View>
             {user.invitation > 0 && (
               <View>
+                {" "}
+                <Heading level={2}>invite</Heading>
                 <p>
                   <Text> you have {user.invitation} invitations.</Text>
                 </p>
