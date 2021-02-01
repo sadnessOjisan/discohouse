@@ -24,6 +24,12 @@ export const useMypage = () => {
   }, [user]);
 
   useEffect(() => {
+    if (currentUser === null) {
+      route("/signin", true);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
     if (currentUser?.uid === undefined) return;
     db.collection(FIRESTORE_KEY.USERS)
       .doc(currentUser.uid)
