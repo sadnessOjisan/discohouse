@@ -16,7 +16,7 @@ import { Layout } from "../components/layout";
 import { useSignup } from "../hooks/useSignup";
 
 export const Signup = () => {
-  const isWide = useMedia({ minWidth: "768" });
+  const isWide = useMedia({ minWidth: "768px" });
   const {
     email,
     handleSetEmail,
@@ -26,14 +26,28 @@ export const Signup = () => {
     token,
     handleClickGithub,
     loading,
-    error,
+    errorMessage,
+    sending,
   } = useSignup();
   return (
     <Layout>
-      <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <div style={{ maxWidth: 924, margin: "0 auto" }}>
         {loading ? (
-          <ProgressCircle aria-label="Loading…" isIndeterminate />
-        ) : error ? (
+          <div
+            style={{
+              position: "fixed",
+              width: "100%",
+              height: "100%",
+              top: 0,
+              left: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ProgressCircle aria-label="Loading…" isIndeterminate />
+          </div>
+        ) : errorMessage ? (
           <Flex justifyContent="center" alignItems="center">
             <AlertDialog
               title="Error"
@@ -43,7 +57,7 @@ export const Signup = () => {
                 window.location.href = "/";
               }}
             >
-              session confirm error. please reload this page.
+              {errorMessage}
             </AlertDialog>
           </Flex>
         ) : token ? (
@@ -66,7 +80,7 @@ export const Signup = () => {
               >
                 <Heading level={3}>Github</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
-                  signup
+                  github signin
                 </Button>
               </View>
               <View
@@ -82,7 +96,7 @@ export const Signup = () => {
                 }}
               >
                 <Heading level={3}>Email</Heading>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} width={isWide ? "80%" : "50%"}>
                   <TextField
                     label="email"
                     name="email"
@@ -97,8 +111,13 @@ export const Signup = () => {
                     onChange={handleSetPassword}
                     value={password}
                   />
-                  <Button type="submit" variant="cta">
-                    submit
+                  <Button
+                    type="submit"
+                    variant="cta"
+                    marginTop={24}
+                    isDisabled={sending}
+                  >
+                    {sending ? "sending" : "submit"}
                   </Button>
                 </Form>
               </View>

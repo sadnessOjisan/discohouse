@@ -1,10 +1,12 @@
 import { Flex, Image, ProgressCircle, Text, View } from "@adobe/react-spectrum";
 import { h } from "preact";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import { Invited } from "../components/invited";
 import { Invitor } from "../components/invitor";
 import { Layout } from "../components/layout";
 import { useUser } from "../hooks/useUser";
+import { auth } from "../infra/firebase";
 
 interface Props {
   id?: string;
@@ -12,8 +14,9 @@ interface Props {
 
 export const User = (props: Props) => {
   const { user, invitor, invited } = useUser(props.id);
+  const [authUser] = useAuthState(auth);
   return (
-    <Layout>
+    <Layout user={authUser}>
       {user ? (
         <View>
           <View>
@@ -33,7 +36,20 @@ export const User = (props: Props) => {
           {invited.length > 0 && <Invited invitors={invited} />}
         </View>
       ) : (
-        <ProgressCircle aria-label="Loading…" isIndeterminate />
+        <div
+          style={{
+            position: "fixed",
+            width: "100%",
+            height: "100%",
+            top: 0,
+            left: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ProgressCircle aria-label="Loading…" isIndeterminate />
+        </div>
       )}
     </Layout>
   );

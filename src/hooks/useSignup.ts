@@ -19,6 +19,18 @@ export const useSignup = () => {
   const [password, setPassword] = useState("");
   const [token, setToken] = useState<string | undefined>(undefined);
   const [user, loading, error] = useAuthState(auth);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
+  const [sending, setSending] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(
+        "認証サービスにて不具合が発生しました。しばらくお待ちください。"
+      );
+    }
+  }, [error]);
 
   useEffect(() => {
     if (user) {
@@ -44,7 +56,7 @@ export const useSignup = () => {
         if (uid === undefined) return;
 
         if (token === undefined) {
-          alert("tokenがありません");
+          setErrorMessage("tokenがありません");
           return;
         }
 
@@ -79,7 +91,7 @@ export const useSignup = () => {
                 });
 
               if (data.invitation - 1 < 0) {
-                alert("招待者の招待可能数の上限を超えました。");
+                setErrorMessage("招待者の招待可能数の上限を超えました。");
                 return;
               }
               await doc.ref.update({ invitation: data.invitation - 1 });
@@ -115,11 +127,11 @@ export const useSignup = () => {
   };
 
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
+    setSending(true);
     if (token === undefined) {
-      alert("招待tokenがありません");
+      setErrorMessage("招待トークンがありません。");
       return;
     }
-    console.log("fire");
     e.preventDefault();
     firebase
       .auth()
@@ -138,7 +150,7 @@ export const useSignup = () => {
             console.log(querySnapshot);
             console.log(querySnapshot.size);
             if (querySnapshot.size === 0) {
-              alert("不正なtokenです。");
+              setErrorMessage("不正なトークンです。");
               return;
             }
             if (querySnapshot.size > 1) {
@@ -157,7 +169,7 @@ export const useSignup = () => {
                   console.error(e);
                 });
               if (data.invitation - 1 < 0) {
-                alert("招待者の招待可能数の上限を超えました。");
+                setErrorMessage("招待者の招待可能数の上限を超えました。");
                 return;
               }
               await doc.ref.update({ invitation: data.invitation - 1 });
@@ -174,14 +186,18 @@ export const useSignup = () => {
         db.collection(FIRESTORE_KEY.USERS)
           .doc(uid)
           .set(data)
-          .catch((e) => {
-            console.error(e);
-            throw new Error("firestore error");
+          .then(() => {
+            setSending(false);
+          })
+          .catch(() => {
+            setErrorMessage("ユーザー情報の登録に失敗しました。");
           });
       })
       .catch((error) => {
         console.error(error);
-        alert("会員登録に失敗しました。");
+        setErrorMessage(
+          "認証に失敗しました。同一のアドレスをすでに登録していないか・8文字以上のパスワードを利用しているかを確認してください。"
+        );
       });
   };
 
@@ -201,6 +217,7 @@ export const useSignup = () => {
     handleClickGithub,
     user,
     loading,
-    error,
+    errorMessage,
+    sending,
   };
 };

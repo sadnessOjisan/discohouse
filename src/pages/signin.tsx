@@ -8,6 +8,7 @@ import {
   TextField,
   View,
 } from "@adobe/react-spectrum";
+import Send from "@spectrum-icons/workflow/Send";
 import { Fragment, h } from "preact";
 import useMedia from "use-media";
 
@@ -23,15 +24,29 @@ export const Signin = () => {
     handleSubmit,
     handleClickGithub,
     loading,
-    error,
+    errorMessage,
+    sending,
   } = useSignin();
-  const isWide = useMedia({ minWidth: "768" });
+  const isWide = useMedia({ minWidth: "768px" });
   return (
     <Layout>
-      <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <div style={{ maxWidth: 924, margin: "0 auto" }}>
         {loading ? (
-          <ProgressCircle aria-label="Loading…" isIndeterminate />
-        ) : error ? (
+          <div
+            style={{
+              position: "fixed",
+              width: "100%",
+              height: "100%",
+              top: 0,
+              left: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ProgressCircle aria-label="Loading…" isIndeterminate />
+          </div>
+        ) : errorMessage !== undefined ? (
           <Flex justifyContent="center" alignItems="center">
             <AlertDialog
               title="Error"
@@ -41,7 +56,7 @@ export const Signin = () => {
                 window.location.href = "/";
               }}
             >
-              session confirm error. please reload this page.
+              {errorMessage}
             </AlertDialog>
           </Flex>
         ) : (
@@ -64,6 +79,7 @@ export const Signin = () => {
               >
                 <Heading level={3}>Github</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
+                  <Send />
                   github signin
                 </Button>
               </View>
@@ -80,7 +96,7 @@ export const Signin = () => {
                 }}
               >
                 <Heading level={3}>Email</Heading>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} width={isWide ? "80%" : "50%"}>
                   <TextField
                     label="email"
                     name="email"
@@ -95,8 +111,14 @@ export const Signin = () => {
                     onChange={handleSetPassword}
                     value={password}
                   />
-                  <Button type="submit" variant="cta">
-                    submit
+                  <Button
+                    type="submit"
+                    variant="cta"
+                    marginTop={24}
+                    isDisabled={sending}
+                  >
+                    <Send />
+                    {sending ? "sending" : "submit"}
                   </Button>
                 </Form>
               </View>
