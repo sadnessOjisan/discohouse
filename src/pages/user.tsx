@@ -9,6 +9,7 @@ interface Props {
 
 export const User = (props: Props) => {
   const { user, invitor, invited } = useUser(props.id);
+  console.log("invited", invited);
   return (
     <div>
       {user ? (
@@ -23,9 +24,9 @@ export const User = (props: Props) => {
       ) : (
         "no user"
       )}
+      from:
       {invitor && (
         <div>
-          from:
           <Link href={`/${invitor.invitedUserId}`}>
             {invitor.invitedUserName}
             <img src={invitor.invitedImage} />
