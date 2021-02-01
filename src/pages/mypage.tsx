@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { Link } from "preact-router";
-import { Button } from "@adobe/react-spectrum";
+import { Button, ProgressCircle } from "@adobe/react-spectrum";
 import { useMypage } from "../hooks/useMypage";
 import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
@@ -40,7 +40,7 @@ export const Mypage = () => {
           <button onClick={logout}>logout</button>
         </div>
       ) : (
-        "no user"
+        <ProgressCircle aria-label="Loading…" isIndeterminate />
       )}
       <h1>invite from</h1>
       {invitor && (
