@@ -11,13 +11,11 @@ export const useSignin = () => {
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
 
-  const handleSetEmail = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
-    const email = (e.target as HTMLInputElement).value;
+  const handleSetEmail = (email: string) => {
     setEmail(email);
   };
 
-  const handleSetPassword = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
-    const password = (e.target as HTMLInputElement).value;
+  const handleSetPassword = (password: string) => {
     setPassword(password);
   };
 

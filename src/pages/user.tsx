@@ -37,12 +37,12 @@ export const User = (props: Props) => {
               </p>
             </Flex>
           </View>
+          {invitor && <Invitor invitor={invitor} />}
+          {invited.length > 0 && <Invited invitors={invited} />}
         </View>
       ) : (
         <ProgressCircle aria-label="Loading…" isIndeterminate />
       )}
-      {invitor && <Invitor invitor={invitor} />}
-      {invited.length > 0 && <Invited invitors={invited} />}
     </Layout>
   );
 };
