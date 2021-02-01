@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { Link } from "preact-router";
-
+import { Button } from "@adobe/react-spectrum";
 import { useMypage } from "../hooks/useMypage";
 import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
@@ -26,7 +26,9 @@ export const Mypage = () => {
             <input type="file" onChange={handleImageChange} />
             <img src={image} />
             <input value={name} onChange={handleChangeName} />
-            <button onClick={saveProfile}>save</button>
+            <Button variant="primary" onPress={saveProfile}>
+              save
+            </Button>
           </div>
           {user.invitation > 0 && (
             <div>

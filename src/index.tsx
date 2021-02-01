@@ -1,8 +1,11 @@
-import { setup } from "goober";
 import { h, render } from "preact";
+import { Provider, defaultTheme } from "@adobe/react-spectrum";
 
 import { App } from "./pages/app";
 
-setup(h);
-
-render(<App />, document.body);
+render(
+  <Provider theme={defaultTheme}>
+    <App />
+  </Provider>,
+  document.body
+);
