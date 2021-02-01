@@ -1,6 +1,8 @@
+import { AlertDialog, Flex, ProgressCircle } from "@adobe/react-spectrum";
 import { Fragment, h } from "preact";
 import { Link } from "preact-router";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Layout } from "../components/layout";
 
 import { useSignup } from "../hooks/useSignup";
 import { auth } from "../infra/firebase";
@@ -16,17 +18,14 @@ export const Signup = () => {
     token,
     handleSetToken,
     handleClickGithub,
+    user,
+    loading,
+    error,
   } = useSignup();
-  const [user, loading, error] = useAuthState(auth);
   return (
-    <div>
+    <Layout>
       {loading ? (
-        <div>loading</div>
-      ) : user ? (
-        <div>
-          <Link href={`/mypage`}>mypage</Link>
-          <button onClick={handleLogout}>logout</button>
-        </div>
+        <ProgressCircle aria-label="Loading…" isIndeterminate />
       ) : error ? (
         <div>error</div>
       ) : token ? (
@@ -54,24 +53,31 @@ export const Signup = () => {
                 onChange={handleSetPassword}
               />
             </div>
-            <div>
-              <label>token</label>
-              <input
-                name="token"
-                type="text"
-                value={token}
-                onChange={handleSetToken}
-              />
-            </div>
             <button>submit</button>
           </form>
           <p>
-            アカウントを持っている方は<Link href="/signin">こちら</Link>から。
+            If you already have an acount, please sign in from{" "}
+            <Link href="/signin">here</Link>.
           </p>
         </Fragment>
       ) : (
-        <div>you need token</div>
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          UNSAFE_style={{ heidht: "100%" }}
+        >
+          <AlertDialog
+            title="Error"
+            variant="warning"
+            primaryActionLabel="confirm"
+            onPrimaryAction={() => {
+              window.location.href = "/";
+            }}
+          >
+            Please come to signup page with invitation URL.
+          </AlertDialog>
+        </Flex>
       )}
-    </div>
+    </Layout>
   );
 };

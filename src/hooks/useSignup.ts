@@ -1,6 +1,8 @@
 import firebase from "firebase";
 import { JSX } from "preact";
+import { route } from "preact-router";
 import { useEffect, useState } from "preact/hooks";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import { FIRESTORE_KEY } from "../const/firestore-key";
 import { auth, db } from "../infra/firebase";
@@ -16,6 +18,13 @@ export const useSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState<string | undefined>(undefined);
+  const [user, loading, error] = useAuthState(auth);
+
+  useEffect(() => {
+    if (user) {
+      route("/mypage", true);
+    }
+  }, [user]);
 
   useEffect(() => {
     const token = getParam("token", window.location.href);
@@ -192,5 +201,8 @@ export const useSignup = () => {
     token,
     handleSetToken,
     handleClickGithub,
+    user,
+    loading,
+    error,
   };
 };
