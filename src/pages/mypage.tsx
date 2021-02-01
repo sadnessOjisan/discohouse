@@ -1,4 +1,4 @@
-import { Fragment, h } from "preact";
+import { h } from "preact";
 import { Link } from "preact-router";
 
 import { useMypage } from "../hooks/useMypage";
