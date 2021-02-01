@@ -190,12 +190,14 @@ export const useSignup = () => {
             setSending(false);
           })
           .catch((e) => {
-            console.error(e);
-            throw new Error("firestore error");
+            setErrorMessage("ユーザー情報の登録に失敗しました。");
           });
       })
       .catch((error) => {
         console.error(error);
+        setErrorMessage(
+          "認証に失敗しました。同一のアドレスをすでに登録していないか・8文字以上のパスワードを利用しているかを確認してください。"
+        );
       });
   };
 
