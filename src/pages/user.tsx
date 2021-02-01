@@ -8,10 +8,10 @@ import {
 } from "@adobe/react-spectrum";
 import { h } from "preact";
 import { Link } from "preact-router";
+
 import { Invited } from "../components/invited";
 import { Invitor } from "../components/invitor";
 import { Layout } from "../components/layout";
-
 import { useUser } from "../hooks/useUser";
 
 interface Props {

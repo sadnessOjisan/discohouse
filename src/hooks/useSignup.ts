@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import { JSX } from "preact";
-import { route } from "preact-router";
 import { useEffect, useState } from "preact/hooks";
+import { route } from "preact-router";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { FIRESTORE_KEY } from "../const/firestore-key";
@@ -96,13 +96,11 @@ export const useSignup = () => {
     setToken(token || undefined);
   }, []);
 
-  const handleSetEmail = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
-    const email = (e.target as HTMLInputElement).value;
+  const handleSetEmail = (email: string) => {
     setEmail(email);
   };
 
-  const handleSetPassword = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
-    const password = (e.target as HTMLInputElement).value;
+  const handleSetPassword = (password: string) => {
     setPassword(password);
   };
 

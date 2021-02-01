@@ -4,7 +4,7 @@ import { h, render } from "preact";
 import { App } from "./pages/app";
 
 render(
-  <Provider theme={defaultTheme} height="100%">
+  <Provider theme={defaultTheme} minHeight="100vh">
     <App />
   </Provider>,
   document.body

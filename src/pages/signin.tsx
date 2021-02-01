@@ -12,8 +12,8 @@ import {
 } from "@adobe/react-spectrum";
 import { Fragment, h } from "preact";
 import { Link } from "preact-router";
-import { Layout } from "../components/layout";
 
+import { Layout } from "../components/layout";
 import { useSignin } from "../hooks/useSignin";
 
 export const Signin = () => {
@@ -66,7 +66,9 @@ export const Signin = () => {
                 }}
               >
                 <Heading level={3}>Github</Heading>
-                <Button onClick={handleClickGithub}>github signin</Button>
+                <Button onClick={handleClickGithub} variant="cta">
+                  github signin
+                </Button>
               </View>
               <View
                 UNSAFE_style={{
@@ -96,7 +98,9 @@ export const Signin = () => {
                     onChange={handleSetPassword}
                     value={password}
                   />
-                  <Button type="submit">submit</Button>
+                  <Button type="submit" variant="cta">
+                    submit
+                  </Button>
                 </Form>
               </View>
             </Flex>
