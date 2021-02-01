@@ -9,7 +9,6 @@ import {
   View,
 } from "@adobe/react-spectrum";
 import { Fragment, h } from "preact";
-import { Link } from "preact-router";
 import useMedia from "use-media";
 
 import { Layout } from "../components/layout";
