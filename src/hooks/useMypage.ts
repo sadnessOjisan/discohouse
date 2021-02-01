@@ -16,6 +16,7 @@ export const useMypage = () => {
   const [currentUser] = useAuthState(auth);
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setName(user?.name || "");
@@ -37,7 +38,8 @@ export const useMypage = () => {
             invitationKey: data.invitationKey,
           });
         } else {
-          console.log("No such document!");
+          console.error("not found user");
+          setError("該当するユーザーが見つかりませんでした。");
         }
       });
   }, [currentUser?.uid]);
