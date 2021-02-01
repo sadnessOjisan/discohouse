@@ -10,6 +10,8 @@ export const useUser = (uid?: string) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
   const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
+
+  // user情報の取得
   useEffect(() => {
     if (uid === undefined) return;
     db.collection(FIRESTORE_KEY.USERS)
@@ -30,7 +32,7 @@ export const useUser = (uid?: string) => {
       });
   }, [uid]);
 
-  // 招待した人
+  // 自分を招待した人の情報を取得
   useEffect(() => {
     if (uid === undefined) return;
     db.collection(FIRESTORE_KEY.INVITATIONS)
@@ -61,6 +63,7 @@ export const useUser = (uid?: string) => {
       });
   }, [uid, invited]);
 
+  // 自分が招待した人の情報を取得
   useEffect(() => {
     if (uid === undefined) return;
     db.collection(FIRESTORE_KEY.INVITATIONS)

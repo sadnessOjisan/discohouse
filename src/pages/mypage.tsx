@@ -39,6 +39,7 @@ export const Mypage = () => {
       ) : (
         "no user"
       )}
+      <h1>invite from</h1>
       {invitor && (
         <div>
           from:

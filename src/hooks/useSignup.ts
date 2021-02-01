@@ -104,15 +104,15 @@ export const useSignup = () => {
 
   const handleClickGithub = () => {
     const provider = new firebase.auth.GithubAuthProvider();
-    firebase
-      .auth()
-      .signInWithRedirect(provider)
-      .then((user) => {
-        user;
-      });
+    firebase.auth().signInWithRedirect(provider);
   };
 
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
+    if (token === undefined) {
+      alert("招待tokenがありません");
+      return;
+    }
+    console.log("fire");
     e.preventDefault();
     firebase
       .auth()
@@ -121,27 +121,19 @@ export const useSignup = () => {
         if (!user.user) throw new Error("invalid user");
         const uid = user.user.uid;
         if (!user.user.email) throw new Error("invalid user");
-        const data: SaveUser = {
-          name: user.user.displayName,
-          image: user.user.photoURL,
-          invitation: 3,
-          invitationKey: createToken(),
-        };
 
-        // 新規登録
-        db.collection(FIRESTORE_KEY.USERS)
-          .doc(uid)
-          .set(data)
-          .catch((e) => {
-            console.error(e);
-            throw new Error("firestore error");
-          });
-
-        // invitationの減少
+        console.log("token", token);
+        // 招待者のinvitationの減少
         db.collection(FIRESTORE_KEY.USERS)
           .where("invitationKey", "==", token)
           .get()
           .then((querySnapshot) => {
+            console.log(querySnapshot);
+            console.log(querySnapshot.size);
+            if (querySnapshot.size === 0) {
+              alert("不正なtokenです。");
+              return;
+            }
             if (querySnapshot.size > 1) {
               console.error("same tokens");
             }
@@ -163,6 +155,21 @@ export const useSignup = () => {
               }
               await doc.ref.update({ invitation: data.invitation - 1 });
             });
+          });
+
+        // 新規登録
+        const data: SaveUser = {
+          name: user.user.displayName,
+          image: user.user.photoURL,
+          invitation: 3,
+          invitationKey: createToken(),
+        };
+        db.collection(FIRESTORE_KEY.USERS)
+          .doc(uid)
+          .set(data)
+          .catch((e) => {
+            console.error(e);
+            throw new Error("firestore error");
           });
       })
       .catch((error) => {
