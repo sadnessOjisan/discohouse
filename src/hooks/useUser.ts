@@ -26,6 +26,7 @@ export const useUser = (uid?: string) => {
             image: data.image || Avater,
             invitation: data.invitation,
             invitationKey: data.invitationKey,
+            id: doc.id,
           });
         } else {
           console.log("No such document!");

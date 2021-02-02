@@ -3,6 +3,7 @@ export type User = {
   image: string;
   invitation: number;
   invitationKey: string;
+  id: string;
 };
 
 export type Invitor = {

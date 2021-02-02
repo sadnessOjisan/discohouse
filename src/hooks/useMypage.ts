@@ -42,6 +42,7 @@ export const useMypage = () => {
             image: data.image || Avater,
             invitation: data.invitation,
             invitationKey: data.invitationKey,
+            id: doc.id,
           });
         } else {
           console.error("not found user");
@@ -126,8 +127,7 @@ export const useMypage = () => {
     });
   };
 
-  const handleChangeName = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
-    const name = (e.target as HTMLInputElement).value;
+  const handleChangeName = (name: string) => {
     setName(name);
   };
 

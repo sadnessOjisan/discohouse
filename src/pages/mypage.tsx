@@ -1,5 +1,7 @@
 import {
+  AlertDialog,
   Button,
+  Flex,
   Heading,
   Image,
   ProgressCircle,
@@ -27,12 +29,26 @@ export const Mypage = () => {
     handleImageChange,
     saveProfile,
     handleChangeName,
+    error,
   } = useMypage();
 
   return (
     <Layout>
       <div style={{ maxWidth: 924, margin: "0 auto" }}>
-        {user ? (
+        {error ? (
+          <Flex justifyContent="center" alignItems="center">
+            <AlertDialog
+              title="Error"
+              variant="warning"
+              primaryActionLabel="confirm"
+              onPrimaryAction={() => {
+                window.location.href = "/";
+              }}
+            >
+              {error}
+            </AlertDialog>
+          </Flex>
+        ) : user ? (
           <View>
             <View marginBottom={32}>
               {user.invitation > 0 && (

@@ -18,6 +18,7 @@ export const Layout = ({
           alignItems: "center",
           maxWidth: 924,
           margin: "0 auto",
+          padding: "4px 8px",
         }}
       >
         <Link
@@ -31,15 +32,25 @@ export const Layout = ({
         >
           <span>✌️ </span>Discohouse
         </Link>
-        {user && (
+        {user ? (
           <Link
             style={{
-              color: "white",
+              color: "inherit",
               textDecoration: "none",
             }}
             href="/mypage"
           >
             Mypage
+          </Link>
+        ) : (
+          <Link
+            style={{
+              color: "inherit",
+              textDecoration: "none",
+            }}
+            href="/signin"
+          >
+            Signin
           </Link>
         )}
       </Header>
