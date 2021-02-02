@@ -3,8 +3,8 @@ import {
   Flex,
   Heading,
   Image,
-  View,
   Link as ALink,
+  View,
 } from "@adobe/react-spectrum";
 import { h } from "preact";
 import { Link } from "preact-router";
