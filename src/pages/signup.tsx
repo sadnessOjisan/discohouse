@@ -65,7 +65,12 @@ export const Signup = () => {
             <Heading level={1} UNSAFE_style={{ textAlign: "center" }}>
               signup
             </Heading>
-            <div style={{ display: "flex" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: isWide ? "row" : "column",
+              }}
+            >
               <View
                 UNSAFE_style={{
                   borderRadius: 8,
@@ -76,7 +81,8 @@ export const Signup = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   flexDirection: "column",
-                  marginRight: 12,
+                  marginRight: isWide && 12,
+                  marginBottom: !isWide && 12,
                 }}
               >
                 <Heading level={3}>Github</Heading>
@@ -97,7 +103,7 @@ export const Signup = () => {
                 }}
               >
                 <Heading level={3}>Email</Heading>
-                <Form onSubmit={handleSubmit} width={isWide ? "80%" : "50%"}>
+                <Form onSubmit={handleSubmit} width={"80%"}>
                   <TextField
                     label="email"
                     name="email"
