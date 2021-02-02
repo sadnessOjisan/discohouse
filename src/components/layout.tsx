@@ -23,9 +23,9 @@ export const Layout = ({
         <Link
           style={{
             fontSize: 20,
-            color: "white",
             textDecoration: "none",
             fontWeight: 700,
+            color: "inherit",
           }}
           href="/"
         >
