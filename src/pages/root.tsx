@@ -33,10 +33,20 @@ export const Root = () => {
 
         <Heading level={1}>How to use</Heading>
         <p>1. Signup from invitation</p>
-        <Image src={Signup} alt="top image" width={isWide ? "60%" : "90%"} />
+        <Image
+          src={Signup}
+          alt="signup flow"
+          width={isWide ? "60%" : "90%"}
+          UNSAFE_style={{ border: "solid 1px gray" }}
+        />
 
         <p>2. Send your friends invitation</p>
-        <Image src={Mypage} alt="top image" width={isWide ? "60%" : "90%"} />
+        <Image
+          src={Mypage}
+          alt="send invitation"
+          width={isWide ? "60%" : "90%"}
+          UNSAFE_style={{ border: "solid 1px gray" }}
+        />
 
         <Heading level={1}>Latest users</Heading>
         <div
