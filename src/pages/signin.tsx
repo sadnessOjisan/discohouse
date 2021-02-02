@@ -5,6 +5,7 @@ import {
   Form,
   Heading,
   ProgressCircle,
+  Text,
   TextField,
   View,
 } from "@adobe/react-spectrum";
@@ -87,7 +88,7 @@ export const Signin = () => {
                 <Heading level={3}>Github</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
                   <Send />
-                  github signin
+                  <Text>github signin</Text>
                 </Button>
               </View>
               <View
@@ -125,7 +126,7 @@ export const Signin = () => {
                     isDisabled={sending}
                   >
                     <Send />
-                    {sending ? "sending" : "submit"}
+                    <Text width={"auto"}>{sending ? "sending" : "submit"}</Text>
                   </Button>
                 </Form>
               </View>

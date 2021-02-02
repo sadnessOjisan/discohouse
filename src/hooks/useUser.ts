@@ -7,10 +7,10 @@ import { FirestoreInvitationField, FirestoreUserField } from "../type/api";
 import { Invitor, User } from "../type/user";
 
 export const useUser = (uid?: string) => {
-  console.log(uid);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
   const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
+  const [error, setError] = useState("");
 
   // user情報の取得
   useEffect(() => {
@@ -30,6 +30,9 @@ export const useUser = (uid?: string) => {
           });
         } else {
           console.log("No such document!");
+          setError(
+            "該当するユーザーが見つかりません。お手数ですがリロードして下さい。"
+          );
         }
       });
   }, [uid]);
@@ -64,7 +67,6 @@ export const useUser = (uid?: string) => {
   // 自分を招待した人の情報を取得
   useEffect(() => {
     if (uid === undefined) return;
-    console.log("invited uid", uid);
     db.collection(FIRESTORE_KEY.INVITATIONS)
       .where("to", "==", uid)
       .get()
@@ -93,5 +95,5 @@ export const useUser = (uid?: string) => {
       });
     return () => setInvitor(undefined);
   }, [uid]);
-  return { user, invitor, invited };
+  return { user, invitor, invited, error };
 };

@@ -60,7 +60,6 @@ export const useSignin = () => {
       .auth()
       .signInWithRedirect(provider)
       .then(() => {
-        console.log("mypage");
         route(`/user/mypage`, true);
       })
       .catch((error) => {

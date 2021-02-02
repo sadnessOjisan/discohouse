@@ -9,6 +9,9 @@ import {
   TextField,
   View,
 } from "@adobe/react-spectrum";
+import Copy from "@spectrum-icons/workflow/Copy";
+import Send from "@spectrum-icons/workflow/Send";
+import UserCheckedOut from "@spectrum-icons/workflow/UserCheckedOut";
 import { h } from "preact";
 import { useState } from "preact/hooks";
 
@@ -95,7 +98,8 @@ export const Mypage = () => {
                     variant="cta"
                     isDisabled={copied}
                   >
-                    {copied ? "Copied" : "Copy"}
+                    <Copy />
+                    <Text>{copied ? "Copied" : "Copy"}</Text>
                   </Button>
                 </View>
               )}
@@ -144,7 +148,8 @@ export const Mypage = () => {
                 variant="cta"
                 isDisalbed={isSending}
               >
-                {isSending ? "sending" : "save"}
+                <Send />
+                <Text>{isSending ? "sending" : "save"}</Text>
               </Button>
             </View>
             <View marginBottom={32}>
@@ -157,7 +162,8 @@ export const Mypage = () => {
             <View marginBottom={32}>
               <Heading level={2}>Session</Heading>
               <Button onClick={logout} variant="negative">
-                logout
+                <UserCheckedOut />
+                <Text>logout</Text>
               </Button>
             </View>
           </View>

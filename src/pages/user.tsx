@@ -1,4 +1,11 @@
-import { Flex, Image, ProgressCircle, Text, View } from "@adobe/react-spectrum";
+import {
+  AlertDialog,
+  Flex,
+  Image,
+  ProgressCircle,
+  Text,
+  View,
+} from "@adobe/react-spectrum";
 import { h } from "preact";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -13,11 +20,24 @@ interface Props {
 }
 
 export const User = (props: Props) => {
-  const { user, invitor, invited } = useUser(props.id);
+  const { user, invitor, invited, error } = useUser(props.id);
   const [authUser] = useAuthState(auth);
   return (
     <Layout user={authUser}>
-      {user ? (
+      {error ? (
+        <Flex justifyContent="center" alignItems="center">
+          <AlertDialog
+            title="Error"
+            variant="warning"
+            primaryActionLabel="confirm"
+            onPrimaryAction={() => {
+              window.location.href = "/";
+            }}
+          >
+            {error}
+          </AlertDialog>
+        </Flex>
+      ) : user ? (
         <View>
           <View>
             <Flex alignItems="center" direction="column">
