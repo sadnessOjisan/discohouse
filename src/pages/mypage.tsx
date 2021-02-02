@@ -36,6 +36,8 @@ export const Mypage = () => {
     handleChangeName,
     error,
     isSending,
+    currentUser,
+    handleSendMail,
   } = useMypage();
 
   return (
@@ -54,125 +56,154 @@ export const Mypage = () => {
               {error}
             </AlertDialog>
           </Flex>
-        ) : user ? (
-          <View>
-            <View marginBottom={32}>
-              {user.invitation > 0 && (
-                <View>
-                  <Heading level={2}>invite</Heading>
-                  <p>
-                    <Text>
-                      you have{" "}
+        ) : user && currentUser ? (
+          currentUser.emailVerified ? (
+            <View>
+              <View marginBottom={32}>
+                {user.invitation > 0 && (
+                  <View>
+                    <Heading level={2}>invite</Heading>
+                    <p>
+                      <Text>
+                        you have{" "}
+                        <Text
+                          color="magenta-500"
+                          UNSAFE_style={{ color: "rgb(202, 41, 150)" }}
+                        >
+                          {user.invitation}
+                        </Text>{" "}
+                        invitations.
+                      </Text>
+                    </p>
+                    <p>
+                      <Text marginEnd={12}>invitation url:</Text>
                       <Text
                         color="magenta-500"
                         UNSAFE_style={{ color: "rgb(202, 41, 150)" }}
                       >
-                        {user.invitation}
-                      </Text>{" "}
-                      invitations.
-                    </Text>
-                  </p>
-                  <p>
-                    <Text marginEnd={12}>invitation url:</Text>
-                    <Text
-                      color="magenta-500"
-                      UNSAFE_style={{ color: "rgb(202, 41, 150)" }}
-                    >
-                      {`${getHostUrl(getEnv())}/signup?token=${
-                        user.invitationKey
-                      }`}
-                    </Text>
-                  </p>
-                  <Button
-                    onClick={() => {
-                      setCopyState(true);
-                      navigator.clipboard.writeText(
-                        `${getHostUrl(getEnv())}/signup?token=${
+                        {`${getHostUrl(getEnv())}/signup?token=${
                           user.invitationKey
-                        }`
-                      );
-                      setTimeout(() => {
-                        setCopyState(false);
-                      }, 1000);
+                        }`}
+                      </Text>
+                    </p>
+                    <Button
+                      onClick={() => {
+                        setCopyState(true);
+                        navigator.clipboard.writeText(
+                          `${getHostUrl(getEnv())}/signup?token=${
+                            user.invitationKey
+                          }`
+                        );
+                        setTimeout(() => {
+                          setCopyState(false);
+                        }, 1000);
+                      }}
+                      variant="cta"
+                      isDisabled={copied}
+                    >
+                      <Copy />
+                      <Text>{copied ? "Copied" : "Copy"}</Text>
+                    </Button>
+                  </View>
+                )}
+              </View>
+              <View marginBottom={32}>
+                <Heading level={2}>edit my profile</Heading>
+                <TextField
+                  label="your name"
+                  value={name}
+                  onChange={handleChangeName}
+                />
+                <View marginTop={32}>
+                  <label
+                    style={{
+                      boxSizing: "border-box",
+                      color: "rgb(162, 162, 162)",
+                      colorScheme: "light dark",
+                      cursor: "Default",
+                      display: "flex",
+                      fontFamily:
+                        'adobe-clean-han-japanese, "Yu Gothic", "メ イ リ オ", "ヒ ラ ギ ノ 角 ゴ Pro W3", "Hiragino Kaku Gothic Pro W3", Osaka, "Ｍ Ｓ Ｐ ゴ シ ッ ク", "MS PGothic", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif',
+                      fontSize: "12px",
+                      fontStyle: "normal",
+                      fontWeight: "400",
+                      height: "24px",
+                      lineHeight: "15.6px",
+                      textAlign: "left",
+                      verticalAlign: "top",
+                      width: "192px",
                     }}
-                    variant="cta"
-                    isDisabled={copied}
                   >
-                    <Copy />
-                    <Text>{copied ? "Copied" : "Copy"}</Text>
-                  </Button>
+                    your image
+                  </label>
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    style={{ color: "rgba(0, 0, 0, 0)" }}
+                  />
+                  <View width={200} marginTop={8}>
+                    <Image
+                      src={image}
+                      alt="user image"
+                      width="200"
+                      height="200"
+                      objectFit="contain"
+                    />
+                  </View>
                 </View>
-              )}
+                <Button
+                  onPress={saveProfile}
+                  marginTop={32}
+                  variant="cta"
+                  isDisalbed={isSending}
+                >
+                  <Send />
+                  <Text>{isSending ? "sending" : "save"}</Text>
+                </Button>
+              </View>
+              <View marginBottom={32}>
+                {invitor && <Invitor invitor={invitor} />}
+              </View>
+              <View marginBottom={32}>
+                {invited.length > 0 && <Invited invitors={invited} />}
+              </View>
+
+              <View marginBottom={32}>
+                <Heading level={2}>Session</Heading>
+                <Button onClick={logout} variant="negative">
+                  <UserCheckedOut />
+                  <Text>logout</Text>
+                </Button>
+              </View>
             </View>
-            <View marginBottom={32}>
-              <Heading level={2}>edit my profile</Heading>
-              <TextField
-                label="your name"
-                value={name}
-                onChange={handleChangeName}
-              />
-              <View marginTop={32}>
-                <label
-                  style={{
-                    boxSizing: "border-box",
-                    color: "rgb(162, 162, 162)",
-                    colorScheme: "light dark",
-                    cursor: "Default",
-                    display: "flex",
-                    fontFamily:
-                      'adobe-clean-han-japanese, "Yu Gothic", "メ イ リ オ", "ヒ ラ ギ ノ 角 ゴ Pro W3", "Hiragino Kaku Gothic Pro W3", Osaka, "Ｍ Ｓ Ｐ ゴ シ ッ ク", "MS PGothic", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif',
-                    fontSize: "12px",
-                    fontStyle: "normal",
-                    fontWeight: "400",
-                    height: "24px",
-                    lineHeight: "15.6px",
-                    textAlign: "left",
-                    verticalAlign: "top",
-                    width: "192px",
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: 48,
+              }}
+            >
+              <p>We sent you an email to verify your email address. </p>
+              <p>
+                After we confirm your email address is valid, you can start
+                application.
+              </p>
+              <View marginTop={24} marginBottom={12}>
+                <Button onClick={handleSendMail} variant="cta">
+                  resend email
+                </Button>
+              </View>
+              <View>
+                <Button
+                  onClick={() => {
+                    window.location.href = "/mypage";
                   }}
                 >
-                  your image
-                </label>
-                <input
-                  type="file"
-                  onChange={handleImageChange}
-                  style={{ color: "rgba(0, 0, 0, 0)" }}
-                />
-                <View width={200} marginTop={8}>
-                  <Image
-                    src={image}
-                    alt="user image"
-                    width="200"
-                    height="200"
-                    objectFit="contain"
-                  />
-                </View>
+                  reload
+                </Button>
               </View>
-              <Button
-                onPress={saveProfile}
-                marginTop={32}
-                variant="cta"
-                isDisalbed={isSending}
-              >
-                <Send />
-                <Text>{isSending ? "sending" : "save"}</Text>
-              </Button>
-            </View>
-            <View marginBottom={32}>
-              {invitor && <Invitor invitor={invitor} />}
-            </View>
-            <View marginBottom={32}>
-              {invited.length > 0 && <Invited invitors={invited} />}
-            </View>
-
-            <View marginBottom={32}>
-              <Heading level={2}>Session</Heading>
-              <Button onClick={logout} variant="negative">
-                <UserCheckedOut />
-                <Text>logout</Text>
-              </Button>
-            </View>
-          </View>
+            </div>
+          )
         ) : (
           <div
             style={{

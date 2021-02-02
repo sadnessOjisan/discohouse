@@ -90,7 +90,7 @@ export const Signup = () => {
                 <Heading level={3}>Github</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
                   <Send />
-                  <Text>github signin</Text>
+                  <Text>github signup</Text>
                 </Button>
               </View>
               <View
