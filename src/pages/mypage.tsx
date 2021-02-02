@@ -9,7 +9,11 @@ import {
   TextField,
   View,
 } from "@adobe/react-spectrum";
+import Copy from "@spectrum-icons/workflow/Copy";
+import Send from "@spectrum-icons/workflow/Send";
+import UserCheckedOut from "@spectrum-icons/workflow/UserCheckedOut";
 import { h } from "preact";
+import { useState } from "preact/hooks";
 
 import { Invited } from "../components/invited";
 import { Invitor } from "../components/invitor";
@@ -19,6 +23,7 @@ import { getEnv } from "../util/getEnv";
 import { getHostUrl } from "../util/getHostUrl";
 
 export const Mypage = () => {
+  const [copied, setCopyState] = useState(false);
   const {
     user,
     logout,
@@ -30,6 +35,7 @@ export const Mypage = () => {
     saveProfile,
     handleChangeName,
     error,
+    isSending,
   } = useMypage();
 
   return (
@@ -79,15 +85,21 @@ export const Mypage = () => {
                   </p>
                   <Button
                     onClick={() => {
+                      setCopyState(true);
                       navigator.clipboard.writeText(
                         `${getHostUrl(getEnv())}/signup?token=${
                           user.invitationKey
                         }`
                       );
+                      setTimeout(() => {
+                        setCopyState(false);
+                      }, 1000);
                     }}
                     variant="cta"
+                    isDisabled={copied}
                   >
-                    Copy
+                    <Copy />
+                    <Text>{copied ? "Copied" : "Copy"}</Text>
                   </Button>
                 </View>
               )}
@@ -126,12 +138,24 @@ export const Mypage = () => {
                   onChange={handleImageChange}
                   style={{ color: "rgba(0, 0, 0, 0)" }}
                 />
-                <View width={200} height={200} marginTop={8}>
-                  <Image src={image} alt="user image" />
+                <View width={200} marginTop={8}>
+                  <Image
+                    src={image}
+                    alt="user image"
+                    width="200"
+                    height="200"
+                    objectFit="contain"
+                  />
                 </View>
               </View>
-              <Button onPress={saveProfile} marginTop={32} variant="cta">
-                save
+              <Button
+                onPress={saveProfile}
+                marginTop={32}
+                variant="cta"
+                isDisalbed={isSending}
+              >
+                <Send />
+                <Text>{isSending ? "sending" : "save"}</Text>
               </Button>
             </View>
             <View marginBottom={32}>
@@ -144,7 +168,8 @@ export const Mypage = () => {
             <View marginBottom={32}>
               <Heading level={2}>Session</Heading>
               <Button onClick={logout} variant="negative">
-                logout
+                <UserCheckedOut />
+                <Text>logout</Text>
               </Button>
             </View>
           </View>

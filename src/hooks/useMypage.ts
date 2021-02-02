@@ -8,6 +8,7 @@ import { CLOUDSTORAGE_KEY, FIRESTORE_KEY } from "../const/firestore-key";
 import { auth, db, storage } from "../infra/firebase";
 import { FirestoreInvitationField, FirestoreUserField } from "../type/api";
 import { Invitor, User } from "../type/user";
+import { createToken } from "../util/createToken";
 
 export const useMypage = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -15,8 +16,10 @@ export const useMypage = () => {
   const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
   const [currentUser] = useAuthState(auth);
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(""); // form表示用の画像
+  const [uploadImage, setUploadImage] = useState("");
   const [error, setError] = useState("");
+  const [isSending, setSending] = useState(false);
 
   useEffect(() => {
     setName(user?.name || "");
@@ -46,7 +49,9 @@ export const useMypage = () => {
           });
         } else {
           console.error("not found user");
-          setError("該当するユーザーが見つかりませんでした。");
+          setError(
+            "該当するユーザーが見つかりませんでした。お手数ですがリロードして下さい。"
+          );
         }
       });
   }, [currentUser?.uid]);
@@ -75,7 +80,7 @@ export const useMypage = () => {
                   invitedImage: data.image || Avater,
                 });
               } else {
-                console.log("No such document!");
+                console.error("No such document!");
               }
             });
         });
@@ -119,10 +124,12 @@ export const useMypage = () => {
       throw new Error("should choose file");
     }
     const file = files[0];
-    const ref = storage.ref().child(CLOUDSTORAGE_KEY.USER_IMAGE);
+    const ref = storage
+      .ref()
+      .child(`${CLOUDSTORAGE_KEY.USER_IMAGE}/${createToken()}`);
     ref.put(file).then((snapshot) => {
       snapshot.ref.getDownloadURL().then((value) => {
-        setImage(value);
+        setUploadImage(value);
       });
     });
   };
@@ -132,10 +139,19 @@ export const useMypage = () => {
   };
 
   const saveProfile = () => {
-    db.collection(FIRESTORE_KEY.USERS).doc(currentUser.uid).update({
-      name,
-      image,
-    });
+    setSending(true);
+    db.collection(FIRESTORE_KEY.USERS)
+      .doc(currentUser.uid)
+      .update({
+        name,
+        image: uploadImage,
+      })
+      .then(() => setSending(false))
+      .catch((e) => {
+        console.error(e);
+        setError("データの保存に失敗しました。リトライしてください。");
+        setSending(false);
+      });
   };
 
   return {
@@ -149,5 +165,6 @@ export const useMypage = () => {
     handleImageChange,
     saveProfile,
     error,
+    isSending,
   };
 };

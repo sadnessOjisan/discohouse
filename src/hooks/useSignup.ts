@@ -143,14 +143,11 @@ export const useSignup = () => {
         const uid = user.user.uid;
         if (!user.user.email) throw new Error("invalid user");
 
-        console.log("token", token);
         // 招待者のinvitationの減少
         db.collection(FIRESTORE_KEY.USERS)
           .where("invitationKey", "==", token)
           .get()
           .then((querySnapshot) => {
-            console.log(querySnapshot);
-            console.log(querySnapshot.size);
             if (querySnapshot.size === 0) {
               setErrorMessage("不正なトークンです。");
               return;

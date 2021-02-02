@@ -18,7 +18,7 @@ type Props = {
 export const Invitor = ({ invitor }: Props) => {
   return (
     <View>
-      <Heading level={2}>nominated by</Heading>
+      <Heading level={2}>Nominated by</Heading>
       <View>
         <ALink key={invitor.invitedUserId} marginTop={24}>
           <Link
@@ -32,6 +32,7 @@ export const Invitor = ({ invitor }: Props) => {
                 width={40}
                 height={40}
                 UNSAFE_style={{ marginRight: 12 }}
+                objectFit="contain"
               />
               <View marginLeft={12}>{invitor.invitedUserName}</View>
             </Flex>

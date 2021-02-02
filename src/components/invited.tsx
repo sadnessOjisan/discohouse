@@ -18,7 +18,7 @@ type Props = {
 export const Invited = ({ invitors }: Props) => {
   return (
     <View>
-      <Heading level={2}>sent invitation</Heading>
+      <Heading level={2}>Invite to</Heading>
       {invitors.map((inv) => (
         <View marginTop={24} key={inv.invitedUserId}>
           <ALink>
@@ -33,6 +33,7 @@ export const Invited = ({ invitors }: Props) => {
                   width={40}
                   height={40}
                   UNSAFE_style={{ marginRight: 12 }}
+                  objectFit="contain"
                 />
                 <View marginLeft={12}>{inv.invitedUserName}</View>
               </Flex>

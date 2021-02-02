@@ -24,10 +24,10 @@ export const Root = () => {
           Discohouse is an invitation-only SNS.
         </Heading>
         <View>
-          <Heading level={3}>You can invite your firends.</Heading>
+          <Heading level={3}>You can just invite your firends.</Heading>
         </View>
         <Image src={Social} alt="top image" width="60%" />
-        <Heading level={1}>current user</Heading>
+        <Heading level={1}>Latest users</Heading>
         <div
           style={{
             display: "flex",

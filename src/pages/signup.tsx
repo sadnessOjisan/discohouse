@@ -5,9 +5,11 @@ import {
   Form,
   Heading,
   ProgressCircle,
+  Text,
   TextField,
   View,
 } from "@adobe/react-spectrum";
+import Send from "@spectrum-icons/workflow/Send";
 import { Fragment, h } from "preact";
 import { Link } from "preact-router";
 import useMedia from "use-media";
@@ -87,7 +89,8 @@ export const Signup = () => {
               >
                 <Heading level={3}>Github</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
-                  github signin
+                  <Send />
+                  <Text>github signin</Text>
                 </Button>
               </View>
               <View
@@ -124,7 +127,8 @@ export const Signup = () => {
                     marginTop={24}
                     isDisabled={sending}
                   >
-                    {sending ? "sending" : "submit"}
+                    <Send />
+                    <Text width={"auto"}>{sending ? "sending" : "submit"}</Text>
                   </Button>
                 </Form>
               </View>
