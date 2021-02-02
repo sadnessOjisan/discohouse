@@ -1,13 +1,13 @@
 import { Heading, Image, View } from "@adobe/react-spectrum";
 import { h } from "preact";
+import useMedia from "use-media";
 
-import Social from "../assets/social.png";
 import Mypage from "../assets/mypage.png";
 import Signup from "../assets/signup.png";
+import Social from "../assets/social.png";
 import { Layout } from "../components/layout";
 import { UserItem } from "../components/userItem";
 import { useRoot } from "../hooks/useRoot";
-import useMedia from "use-media";
 
 export const Root = () => {
   const { users } = useRoot();

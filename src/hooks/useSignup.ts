@@ -48,10 +48,10 @@ export const useSignup = () => {
         if (user === null) return;
         user
           .sendEmailVerification()
-          .then(function () {
+          .then(() => {
             // Email sent.
           })
-          .catch(function (e) {
+          .catch((e) => {
             console.error(e);
             setErrorMessage("email の送信に失敗しました。");
           });
@@ -205,10 +205,10 @@ export const useSignup = () => {
 
         user.user
           .sendEmailVerification()
-          .then(function () {
+          .then(() => {
             // Email sent.
           })
-          .catch(function (e) {
+          .catch((e) => {
             console.error(e);
             setErrorMessage("email の送信に失敗しました。");
           });
