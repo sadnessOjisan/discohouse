@@ -84,6 +84,7 @@ export const useSignup = () => {
               const inv: FirestoreInvitationField = {
                 from: doc.id,
                 to: uid,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
               };
               db.collection(FIRESTORE_KEY.INVITATIONS)
                 .add(inv)

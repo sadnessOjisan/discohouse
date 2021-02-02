@@ -127,8 +127,7 @@ export const useMypage = () => {
     });
   };
 
-  const handleChangeName = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
-    const name = (e.target as HTMLInputElement).value;
+  const handleChangeName = (name: string) => {
     setName(name);
   };
 
