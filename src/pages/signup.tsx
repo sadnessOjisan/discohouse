@@ -65,7 +65,7 @@ export const Signup = () => {
             <Heading level={1} UNSAFE_style={{ textAlign: "center" }}>
               signup
             </Heading>
-            <Flex gap="size-200" direction={isWide ? "row" : "column"}>
+            <div style={{ display: "flex" }}>
               <View
                 UNSAFE_style={{
                   borderRadius: 8,
@@ -76,6 +76,7 @@ export const Signup = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   flexDirection: "column",
+                  marginRight: 12,
                 }}
               >
                 <Heading level={3}>Github</Heading>
@@ -121,7 +122,7 @@ export const Signup = () => {
                   </Button>
                 </Form>
               </View>
-            </Flex>
+            </div>
 
             <p>
               If you already have an acount, please sign in from{" "}
