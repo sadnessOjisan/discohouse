@@ -26,6 +26,7 @@ export const UserItem = ({ user }: Props) => {
               width={40}
               height={40}
               UNSAFE_style={{ marginRight: 12 }}
+              objectFit="contain"
             />
             <View marginLeft={12}>{user.name}</View>
           </div>

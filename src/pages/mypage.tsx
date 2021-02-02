@@ -138,8 +138,14 @@ export const Mypage = () => {
                   onChange={handleImageChange}
                   style={{ color: "rgba(0, 0, 0, 0)" }}
                 />
-                <View width={200} height={200} marginTop={8}>
-                  <Image src={image} alt="user image" />
+                <View width={200} marginTop={8}>
+                  <Image
+                    src={image}
+                    alt="user image"
+                    width="200"
+                    height="200"
+                    objectFit="contain"
+                  />
                 </View>
               </View>
               <Button

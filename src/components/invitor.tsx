@@ -32,6 +32,7 @@ export const Invitor = ({ invitor }: Props) => {
                 width={40}
                 height={40}
                 UNSAFE_style={{ marginRight: 12 }}
+                objectFit="contain"
               />
               <View marginLeft={12}>{invitor.invitedUserName}</View>
             </Flex>
