@@ -8,6 +8,7 @@ import { CLOUDSTORAGE_KEY, FIRESTORE_KEY } from "../const/firestore-key";
 import { auth, db, storage } from "../infra/firebase";
 import { FirestoreInvitationField, FirestoreUserField } from "../type/api";
 import { Invitor, User } from "../type/user";
+import { createToken } from "../util/createToken";
 
 export const useMypage = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -122,7 +123,9 @@ export const useMypage = () => {
       throw new Error("should choose file");
     }
     const file = files[0];
-    const ref = storage.ref().child(CLOUDSTORAGE_KEY.USER_IMAGE);
+    const ref = storage
+      .ref()
+      .child(`${CLOUDSTORAGE_KEY.USER_IMAGE}/${createToken()}`);
     ref.put(file).then((snapshot) => {
       snapshot.ref.getDownloadURL().then((value) => {
         setImage(value);

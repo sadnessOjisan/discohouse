@@ -18,7 +18,7 @@ type Props = {
 export const Invited = ({ invitors }: Props) => {
   return (
     <View>
-      <Heading level={2}>sent invitation</Heading>
+      <Heading level={2}>Invite to</Heading>
       {invitors.map((inv) => (
         <View marginTop={24} key={inv.invitedUserId}>
           <ALink>
