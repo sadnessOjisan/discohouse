@@ -16,7 +16,8 @@ export const useMypage = () => {
   const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
   const [currentUser] = useAuthState(auth);
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(""); // form表示用の画像
+  const [uploadImage, setUploadImage] = useState("");
   const [error, setError] = useState("");
   const [isSending, setSending] = useState(false);
 
@@ -128,7 +129,7 @@ export const useMypage = () => {
       .child(`${CLOUDSTORAGE_KEY.USER_IMAGE}/${createToken()}`);
     ref.put(file).then((snapshot) => {
       snapshot.ref.getDownloadURL().then((value) => {
-        setImage(value);
+        setUploadImage(value);
       });
     });
   };
@@ -143,7 +144,7 @@ export const useMypage = () => {
       .doc(currentUser.uid)
       .update({
         name,
-        image,
+        image: uploadImage,
       })
       .then(() => setSending(false))
       .catch((e) => {
