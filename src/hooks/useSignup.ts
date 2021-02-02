@@ -45,16 +45,25 @@ export const useSignup = () => {
       .getRedirectResult()
       .then((result) => {
         const user = result.user;
+        if (user === null) return;
+        user
+          .sendEmailVerification()
+          .then(() => {
+            // Email sent.
+          })
+          .catch((e) => {
+            console.error(e);
+            setErrorMessage("email の送信に失敗しました。");
+          });
         const data: SaveUser = {
-          name: user?.displayName || null,
-          image: user?.photoURL || null,
+          name: user.displayName || null,
+          image: user.photoURL || null,
           invitation: 3,
           invitationKey: createToken(),
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         };
 
-        const uid = user?.uid;
-        if (uid === undefined) return;
+        const uid = user.uid;
 
         if (token === undefined) {
           setErrorMessage("tokenがありません");
@@ -192,6 +201,16 @@ export const useSignup = () => {
           })
           .catch(() => {
             setErrorMessage("ユーザー情報の登録に失敗しました。");
+          });
+
+        user.user
+          .sendEmailVerification()
+          .then(() => {
+            // Email sent.
+          })
+          .catch((e) => {
+            console.error(e);
+            setErrorMessage("email の送信に失敗しました。");
           });
       })
       .catch((error) => {

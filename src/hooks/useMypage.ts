@@ -14,7 +14,7 @@ export const useMypage = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [invitor, setInvitor] = useState<Invitor | undefined>(undefined);
   const [invited, setInvited] = useState<Invitor[]>([]); // 自分が招待した人
-  const [currentUser] = useAuthState(auth);
+  const [currentUser, isLoading] = useAuthState(auth);
   const [name, setName] = useState("");
   const [image, setImage] = useState(""); // form表示用の画像
   const [uploadImage, setUploadImage] = useState("");
@@ -27,10 +27,10 @@ export const useMypage = () => {
   }, [user]);
 
   useEffect(() => {
-    if (currentUser === null) {
+    if (currentUser === null && isLoading === false) {
       route("/signin", true);
     }
-  }, [currentUser]);
+  }, [currentUser, isLoading]);
 
   useEffect(() => {
     if (currentUser?.uid === undefined) return;
@@ -130,6 +130,7 @@ export const useMypage = () => {
     ref.put(file).then((snapshot) => {
       snapshot.ref.getDownloadURL().then((value) => {
         setUploadImage(value);
+        setImage(value);
       });
     });
   };
@@ -154,6 +155,21 @@ export const useMypage = () => {
       });
   };
 
+  const handleSendMail = () => {
+    if (!currentUser) {
+      setError("この操作にはログインが必要です。");
+    }
+    currentUser
+      .sendEmailVerification()
+      .then(() => {
+        // Email sent.
+      })
+      .catch((error: any) => {
+        console.error(error);
+        setError("email の送信に失敗しました。");
+      });
+  };
+
   return {
     user,
     invitor,
@@ -166,5 +182,7 @@ export const useMypage = () => {
     saveProfile,
     error,
     isSending,
+    currentUser,
+    handleSendMail,
   };
 };
