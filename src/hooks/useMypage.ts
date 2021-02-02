@@ -17,6 +17,7 @@ export const useMypage = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [error, setError] = useState("");
+  const [isSending, setSending] = useState(false);
 
   useEffect(() => {
     setName(user?.name || "");
@@ -46,7 +47,9 @@ export const useMypage = () => {
           });
         } else {
           console.error("not found user");
-          setError("該当するユーザーが見つかりませんでした。");
+          setError(
+            "該当するユーザーが見つかりませんでした。お手数ですがリロードして下さい。"
+          );
         }
       });
   }, [currentUser?.uid]);
@@ -132,10 +135,19 @@ export const useMypage = () => {
   };
 
   const saveProfile = () => {
-    db.collection(FIRESTORE_KEY.USERS).doc(currentUser.uid).update({
-      name,
-      image,
-    });
+    setSending(true);
+    db.collection(FIRESTORE_KEY.USERS)
+      .doc(currentUser.uid)
+      .update({
+        name,
+        image,
+      })
+      .then(() => setSending(false))
+      .catch((e) => {
+        console.error(e);
+        setError("データの保存に失敗しました。リトライしてください。");
+        setSending(false);
+      });
   };
 
   return {
@@ -149,5 +161,6 @@ export const useMypage = () => {
     handleImageChange,
     saveProfile,
     error,
+    isSending,
   };
 };
