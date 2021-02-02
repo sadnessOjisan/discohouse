@@ -61,6 +61,18 @@ export const Mypage = () => {
                       }`}
                     </Text>
                   </p>
+                  <Button
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `${getHostUrl(getEnv())}/signup?token=${
+                          user.invitationKey
+                        }`
+                      );
+                    }}
+                    variant="cta"
+                  >
+                    Copy
+                  </Button>
                 </View>
               )}
             </View>
