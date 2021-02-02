@@ -77,9 +77,9 @@ export const useSignin = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((user) => {
+      .then(() => {
         setSending(false);
-        route(`/user/${user.user?.uid}`, true);
+        route(`/mypage`, true);
       })
       .catch((error) => {
         console.error(error);
