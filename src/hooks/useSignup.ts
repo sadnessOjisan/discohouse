@@ -50,6 +50,7 @@ export const useSignup = () => {
           image: user?.photoURL || null,
           invitation: 3,
           invitationKey: createToken(),
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         };
 
         const uid = user?.uid;
@@ -162,6 +163,7 @@ export const useSignup = () => {
               const inv: FirestoreInvitationField = {
                 from: doc.id,
                 to: uid,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
               };
               db.collection(FIRESTORE_KEY.INVITATIONS)
                 .add(inv)
@@ -182,6 +184,7 @@ export const useSignup = () => {
           image: user.user.photoURL,
           invitation: 3,
           invitationKey: createToken(),
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         };
         db.collection(FIRESTORE_KEY.USERS)
           .doc(uid)

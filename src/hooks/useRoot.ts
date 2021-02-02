@@ -11,7 +11,7 @@ export const useRoot = () => {
 
   useEffect(() => {
     db.collection(FIRESTORE_KEY.USERS)
-      .orderBy("name")
+      .orderBy("timestamp")
       .limit(5)
       .get()
       .then((snapshot) => {

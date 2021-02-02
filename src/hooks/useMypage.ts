@@ -42,6 +42,7 @@ export const useMypage = () => {
             image: data.image || Avater,
             invitation: data.invitation,
             invitationKey: data.invitationKey,
+            id: doc.id,
           });
         } else {
           console.error("not found user");
