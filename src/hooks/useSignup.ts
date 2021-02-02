@@ -33,12 +33,6 @@ export const useSignup = () => {
   }, [error]);
 
   useEffect(() => {
-    if (user) {
-      route("/mypage", true);
-    }
-  }, [user]);
-
-  useEffect(() => {
     const token = getParam("token", window.location.href);
     firebase
       .auth()
@@ -46,7 +40,7 @@ export const useSignup = () => {
       .then((result) => {
         const user = result.user;
         if (user === null) return;
-        user
+        const promise0 = user
           .sendEmailVerification()
           .then(() => {
             // Email sent.
@@ -71,7 +65,8 @@ export const useSignup = () => {
         }
 
         // 新規登録
-        db.collection(FIRESTORE_KEY.USERS)
+        const promise1 = db
+          .collection(FIRESTORE_KEY.USERS)
           .doc(uid)
           .set(data)
           .catch((e) => {
@@ -80,7 +75,8 @@ export const useSignup = () => {
           });
 
         // invitationの減少
-        db.collection(FIRESTORE_KEY.USERS)
+        const promise2 = db
+          .collection(FIRESTORE_KEY.USERS)
           .where("invitationKey", "==", token)
           .get()
           .then((querySnapshot) => {
@@ -108,6 +104,9 @@ export const useSignup = () => {
               await doc.ref.update({ invitation: data.invitation - 1 });
             });
           });
+        Promise.all([promise0, promise1, promise2]).then(() => {
+          route("/mypage", true);
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -153,7 +152,8 @@ export const useSignup = () => {
         if (!user.user.email) throw new Error("invalid user");
 
         // 招待者のinvitationの減少
-        db.collection(FIRESTORE_KEY.USERS)
+        const promise0 = db
+          .collection(FIRESTORE_KEY.USERS)
           .where("invitationKey", "==", token)
           .get()
           .then((querySnapshot) => {
@@ -193,7 +193,8 @@ export const useSignup = () => {
           invitationKey: createToken(),
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         };
-        db.collection(FIRESTORE_KEY.USERS)
+        const promise1 = db
+          .collection(FIRESTORE_KEY.USERS)
           .doc(uid)
           .set(data)
           .then(() => {
@@ -203,7 +204,7 @@ export const useSignup = () => {
             setErrorMessage("ユーザー情報の登録に失敗しました。");
           });
 
-        user.user
+        const promise2 = user.user
           .sendEmailVerification()
           .then(() => {
             // Email sent.
@@ -212,6 +213,10 @@ export const useSignup = () => {
             console.error(e);
             setErrorMessage("email の送信に失敗しました。");
           });
+
+        Promise.all([promise0, promise1, promise2]).then(() => {
+          route("/mypage", true);
+        });
       })
       .catch((error) => {
         console.error(error);
