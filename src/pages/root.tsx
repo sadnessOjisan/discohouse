@@ -1,4 +1,4 @@
-import { Heading, Image, Text, View } from "@adobe/react-spectrum";
+import { Heading, Image, View } from "@adobe/react-spectrum";
 import { h } from "preact";
 
 import Social from "../assets/social.png";

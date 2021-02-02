@@ -1,5 +1,5 @@
 // 招待してくれた人を表示するコンポーネント
-import { Flex, Image, Link as ALink, View } from "@adobe/react-spectrum";
+import { Image, Link as ALink, View } from "@adobe/react-spectrum";
 import { h } from "preact";
 import { Link } from "preact-router";
 

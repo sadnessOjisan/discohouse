@@ -1,9 +1,10 @@
 import { useEffect, useState } from "preact/hooks";
+
+import Avater from "../assets/avatar.png";
 import { FIRESTORE_KEY } from "../const/firestore-key";
 import { db } from "../infra/firebase";
 import { FirestoreUserField } from "../type/api";
 import { User } from "../type/user";
-import Avater from "../assets/avatar.png";
 
 export const useRoot = () => {
   const [users, setUsers] = useState<User[] | undefined>(undefined);
