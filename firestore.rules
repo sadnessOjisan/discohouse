@@ -6,17 +6,16 @@ service cloud.firestore {
       allow create: if request.auth != null
         && request.auth.uid == userId
         && request.resource.data.keys().toSet() == ['name', 'image', 'invitation', 'invitationKey', 'timestamp'].toSet()
-        && request.resource.data.name is string
-        && request.resource.data.image is string
+        // && request.resource.data.name is string nullable
+        // && request.resource.data.image is string nullable
         && request.resource.data.invitation is int
         && request.resource.data.invitationKey is string
-        && request resource.data.timestamp is timestamp
+        && request.resource.data.timestamp is timestamp
         && request.resource.data.invitation == 3
         && request.resource.data.timestamp == request.time;
       allow update: if request.auth != null
-        && request.auth.uid == userId
-        && request.resource.data.diff(resource.data).affectedKeys() == ['invitation'].toSet()
-        && request.resource.data.invitation == resource.data.invitation - 1;
+        && (request.auth.uid == userId || request.resource.data.diff(resource.data).affectedKeys() == ['invitation'].toSet())
+        && (request.resource.data.invitation == resource.data.invitation - 1 || request.resource.data.invitation == resource.data.invitation);
     }
     match /invitations/{invId} {
       allow read;
@@ -24,7 +23,7 @@ service cloud.firestore {
         && request.resource.data.keys().toSet() == ['from', 'to', 'timestamp'].toSet()
         && request.resource.data.from is string
         && request.resource.data.to is string
-        && request resource.data.timestamp is timestamp
+        && request.resource.data.timestamp is timestamp
         && request.resource.data.to == request.auth.uid
         && request.resource.data.timestamp == request.time;
     }
