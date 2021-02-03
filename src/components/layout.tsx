@@ -50,7 +50,7 @@ export const Layout = ({
             }}
             href="/signin"
           >
-            Signin
+            Sign-in
           </Link>
         )}
       </Header>

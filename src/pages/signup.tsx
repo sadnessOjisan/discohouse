@@ -87,10 +87,10 @@ export const Signup = () => {
                   marginBottom: !isWide && 12,
                 }}
               >
-                <Heading level={3}>Github</Heading>
+                <Heading level={3}>GitHub</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
                   <Send />
-                  <Text>github signup</Text>
+                  <Text>GitHub signup</Text>
                 </Button>
               </View>
               <View

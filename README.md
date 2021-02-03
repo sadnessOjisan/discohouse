@@ -13,7 +13,7 @@ npm run dev
 ## todo
 
 - [x] 招待した人を表示
-- [x] github での表示
+- [x] GitHub での表示
 - [x] 画像 upload
 - [x] 情報修正
 - [x] デザイン

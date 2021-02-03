@@ -62,21 +62,21 @@ export const Mypage = () => {
               <View marginBottom={32}>
                 {user.invitation > 0 && (
                   <View>
-                    <Heading level={2}>invite</Heading>
+                    <Heading level={2}>Invite</Heading>
                     <p>
                       <Text>
-                        you have{" "}
+                        You have{" "}
                         <Text
                           color="magenta-500"
                           UNSAFE_style={{ color: "rgb(202, 41, 150)" }}
                         >
                           {user.invitation}
                         </Text>{" "}
-                        invitations.
+                        invitation(s).
                       </Text>
                     </p>
                     <p>
-                      <Text marginEnd={12}>invitation url:</Text>
+                      <Text marginEnd={12}>Invitation url:</Text>
                       <Text
                         color="magenta-500"
                         UNSAFE_style={{ color: "rgb(202, 41, 150)" }}
@@ -108,9 +108,9 @@ export const Mypage = () => {
                 )}
               </View>
               <View marginBottom={32}>
-                <Heading level={2}>edit my profile</Heading>
+                <Heading level={2}>Edit your profile</Heading>
                 <TextField
-                  label="your name"
+                  label="Your name"
                   value={name}
                   onChange={handleChangeName}
                 />
@@ -134,7 +134,7 @@ export const Mypage = () => {
                       width: "192px",
                     }}
                   >
-                    your image
+                    Your image
                   </label>
                   <input
                     type="file"
@@ -158,7 +158,7 @@ export const Mypage = () => {
                   isDisalbed={isSending}
                 >
                   <Send />
-                  <Text>{isSending ? "sending" : "save"}</Text>
+                  <Text>{isSending ? "Sending" : "Save"}</Text>
                 </Button>
               </View>
               <View marginBottom={32}>
@@ -172,7 +172,7 @@ export const Mypage = () => {
                 <Heading level={2}>Session</Heading>
                 <Button onClick={logout} variant="negative">
                   <UserCheckedOut />
-                  <Text>logout</Text>
+                  <Text>Log out</Text>
                 </Button>
               </View>
             </View>
@@ -183,14 +183,14 @@ export const Mypage = () => {
                 marginTop: 48,
               }}
             >
-              <p>We sent you an email to verify your email address. </p>
+              <p>We have sent a verification e-mail to your e-mail address. </p>
               <p>
-                After we confirm your email address is valid, you can start
+                After we confirm your e-mail address is valid, you can start
                 application.
               </p>
               <View marginTop={24} marginBottom={12}>
                 <Button onClick={handleSendMail} variant="cta">
-                  resend email
+                  resend e-mail
                 </Button>
               </View>
               <View>
