@@ -63,7 +63,7 @@ export const Signin = () => {
         ) : (
           <Fragment>
             <Heading level={1} UNSAFE_style={{ textAlign: "center" }}>
-              signin
+              Sign-in
             </Heading>
             <div
               style={{
@@ -85,10 +85,10 @@ export const Signin = () => {
                   marginBottom: !isWide && 12,
                 }}
               >
-                <Heading level={3}>Github</Heading>
+                <Heading level={3}>GitHub</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
                   <Send />
-                  <Text>github signin</Text>
+                  <Text>GitHub sign-in</Text>
                 </Button>
               </View>
               <View
@@ -126,7 +126,7 @@ export const Signin = () => {
                     isDisabled={sending}
                   >
                     <Send />
-                    <Text width={"auto"}>{sending ? "sending" : "submit"}</Text>
+                    <Text width={"auto"}>{sending ? "Sending" : "Submit"}</Text>
                   </Button>
                 </Form>
               </View>

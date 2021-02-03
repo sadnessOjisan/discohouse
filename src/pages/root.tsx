@@ -32,7 +32,7 @@ export const Root = () => {
         <Image src={Social} alt="top image" width={isWide ? "60%" : "100%"} />
 
         <Heading level={1}>How to use</Heading>
-        <p>1. Signup from invitation</p>
+        <p>1. Sign-up from invitation</p>
         <Image
           src={Signup}
           alt="signup flow"

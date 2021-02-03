@@ -65,7 +65,7 @@ export const Signup = () => {
         ) : token ? (
           <Fragment>
             <Heading level={1} UNSAFE_style={{ textAlign: "center" }}>
-              signup
+              Sign-up
             </Heading>
             <div
               style={{
@@ -90,7 +90,7 @@ export const Signup = () => {
                 <Heading level={3}>GitHub</Heading>
                 <Button onClick={handleClickGithub} variant="cta">
                   <Send />
-                  <Text>GitHub signup</Text>
+                  <Text>GitHub sign-up</Text>
                 </Button>
               </View>
               <View
@@ -153,7 +153,7 @@ export const Signup = () => {
                 window.location.href = "/";
               }}
             >
-              Please come to signup page with invitation URL.
+              Please go to the sign-up page with an invitation URL.
             </AlertDialog>
           </Flex>
         )}
